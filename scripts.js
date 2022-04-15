@@ -1,0 +1,1 @@
+//TODO: dodaj tracking za to v kateri sobi je igralec

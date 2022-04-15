@@ -1,0 +1,11 @@
+.content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content iframe {
+    /* height: 60%;
+    width: 60%; */
+}
