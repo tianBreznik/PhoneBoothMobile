@@ -38,7 +38,7 @@ function draw() {
   pg.loadPixels();
   for (let i = 0; i < pg.width; i++) {
     for (let j = 0; j < pg.height; j++) {
-      n = noise(0.01002503 * i, 0.01003463 * j);
+      n = noise(0.01002503 * i + mouseX/1000, 0.01003463 * j + mouseY/1000);
       a = map(n + frameCount * 0.0005, 0, 1, 0, 100);
       c = palette[floor(a % 13) % palette.length];
       pg.set(i, j, color(c));
