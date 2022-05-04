@@ -30,7 +30,9 @@ function setup() {
   console.log("blabla")
   var canvas = createCanvas(canv_side, canv_side);
   var gui = createGui('Experimenting GUI');
-  gui.setPosition(2.15*width, 25);
+
+  frameRate(20)
+  gui.setPosition(2.15 * width, 25);
   sliderRange(1, 14, 1);
   gui.addGlobals('fldSize');
   sliderRange(0.5, 12, 0.5);
@@ -61,7 +63,7 @@ function setup() {
 
   strokeWeight(10);
   //stroke(lineColor);
-  stroke(255,255,0,15); 
+  stroke(255, 255, 0, 50);
   noFill();
   //mySound.play();
 }
@@ -69,7 +71,7 @@ function setup() {
 function draw() {
 
   //pg.loadPixels();
-  background (38,13,89, 50);
+  background(38, 13, 89, 50);
 
   drawStream();
   // for (let i = 0; i < pg.width; i++) {
@@ -91,33 +93,33 @@ function draw() {
 
 //TODO: dodaj tracking za to v kateri sobi je igralec
 function getBipsiVar(varname) {
-    const bipsi = document.getElementById("bipsi").contentWindow
-    console.log(bipsi)
+  const bipsi = document.getElementById("bipsi").contentWindow
+  console.log(bipsi)
 
-    console.log("Fetching variable of name: ", varname)
+  console.log("Fetching variable of name: ", varname)
 
-    var r = bipsi.PLAYBACK.variables.get(varname)
-    console.log("VALUE OF ", varname, " IS: ", r)
-    return r
+  var r = bipsi.PLAYBACK.variables.get(varname)
+  console.log("VALUE OF ", varname, " IS: ", r)
+  return r
 }
 
 //second experiment - lines
-function drawStream () {
+function drawStream() {
   nx = 0;
-  for (let i=0; i<canv_side; i += fldSize) {
+  for (let i = 0; i < canv_side; i += fldSize) {
     ny = 0;
-    for (let j=0; j<canv_side; j += fldSize) {
-      var angle = map (noise (nx, ny, nz), 0, 2.0, 0, piMult*PI);
-      var x = ampMultX * cos (angle);
-      var y = ampMultY * sin (angle);
-      line (i, j, i+x, j+y);
+    for (let j = 0; j < canv_side; j += fldSize) {
+      var angle = map(noise(nx, ny, nz), 0, 2.0, 0, piMult * PI);
+      var x = ampMultX * cos(angle);
+      var y = ampMultY * sin(angle);
+      line(i, j, i + x, j + y);
       ny += 0.03;
 
       //gradient
       // var c = map(angle, 0, PI, 0, TWO_PI)
-			// stroke(c,50,80);
+      // stroke(c,50,80);
     }
     nx += 0.02;
   }
-  nz +=oscTempo; //tempo
+  nz += oscTempo; //tempo
 }
