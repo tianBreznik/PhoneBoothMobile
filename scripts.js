@@ -21,10 +21,11 @@ var oscTempo = 0.05;
 let canv_side = 512;
 let mySound;
 
-// function preload() {
-//   soundFormats('m4a');
-//   mySound = loadSound('assets/mariemubi');
-// }
+function preload() {
+  console.log("preloading")
+  soundFormats('m4a');
+  mySound = loadSound('assets/mariemubi');
+}
 
 function setup() {
   console.log("blabla")
@@ -59,11 +60,11 @@ function setup() {
   //pgFrame.square(25, 25, s * 0.9);
   //pgFrame.noErase();
 
-  strokeWeight(10);
+  strokeWeight(5);
   //stroke(lineColor);
   stroke(255,255,0,15); 
   noFill();
-  //mySound.play();
+  mySound.play();
 }
 
 function draw() {
@@ -104,20 +105,24 @@ function getBipsiVar(varname) {
 //second experiment - lines
 function drawStream () {
   nx = 0;
-  for (let i=0; i<canv_side; i += fldSize) {
+  var loc_i = 0;
+  for (let i=0; i<canv_side/3; i += fldSize) {
     ny = 0;
-    for (let j=0; j<canv_side; j += fldSize) {
+    var loc_j = 0;
+    for (let j=0; j<canv_side/3; j += fldSize) {
       var angle = map (noise (nx, ny, nz), 0, 2.0, 0, piMult*PI);
       var x = ampMultX * cos (angle);
       var y = ampMultY * sin (angle);
-      line (i, j, i+x, j+y);
+      line (loc_i+55, loc_j+55, loc_i+55+x, loc_j+55+y);
       ny += 0.03;
 
       //gradient
-      // var c = map(angle, 0, PI, 0, TWO_PI)
-			// stroke(c,50,80);
+      //var c = map(angle, 0, PI, 0, TWO_PI)
+			//stroke(c,50,80);
+      loc_j += fldSize + 15;
     }
     nx += 0.02;
+    loc_i += fldSize + 15;
   }
-  nz +=oscTempo; //tempo
+  nz += oscTempo; //tempo
 }
