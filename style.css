@@ -1,3 +1,7 @@
+body {
+    background-color: aquamarine;
+}
+
 .content {
     height: 100vh;
     display: flex;
@@ -7,12 +11,12 @@
 
 canvas {
     display: block;
-    float:right;
+    float: right;
     margin-right: 8em;
 }
 
 #bipsi {
-    margin-left:8em;
+    margin-left: 8em;
 }
 
 .content iframe {
