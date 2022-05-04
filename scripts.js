@@ -11,7 +11,7 @@ let ny = 0.0;
 let nz = 0.0;
 
 // gui test
-var fldSize = 6;
+var fldSize = 12;
 //let fldColor = color(255, 0, 0);
 var piMult = 7;
 var ampMultX = 80;
