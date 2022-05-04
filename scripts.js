@@ -31,7 +31,9 @@ function setup() {
   console.log("blabla")
   var canvas = createCanvas(canv_side, canv_side);
   var gui = createGui('Experimenting GUI');
-  gui.setPosition(2.15*width, 25);
+
+  frameRate(20)
+  gui.setPosition(2.15 * width, 25);
   sliderRange(1, 14, 1);
   gui.addGlobals('fldSize');
   sliderRange(0.5, 12, 0.5);
@@ -62,7 +64,7 @@ function setup() {
 
   strokeWeight(5);
   //stroke(lineColor);
-  stroke(255,255,0,15); 
+  stroke(255, 255, 0, 50);
   noFill();
   mySound.play();
 }
@@ -70,7 +72,7 @@ function setup() {
 function draw() {
 
   //pg.loadPixels();
-  background (38,13,89, 50);
+  background(38, 13, 89, 50);
 
   drawStream();
   // for (let i = 0; i < pg.width; i++) {
@@ -92,18 +94,18 @@ function draw() {
 
 //TODO: dodaj tracking za to v kateri sobi je igralec
 function getBipsiVar(varname) {
-    const bipsi = document.getElementById("bipsi").contentWindow
-    console.log(bipsi)
+  const bipsi = document.getElementById("bipsi").contentWindow
+  console.log(bipsi)
 
-    console.log("Fetching variable of name: ", varname)
+  console.log("Fetching variable of name: ", varname)
 
-    var r = bipsi.PLAYBACK.variables.get(varname)
-    console.log("VALUE OF ", varname, " IS: ", r)
-    return r
+  var r = bipsi.PLAYBACK.variables.get(varname)
+  console.log("VALUE OF ", varname, " IS: ", r)
+  return r
 }
 
 //second experiment - lines
-function drawStream () {
+function drawStream() {
   nx = 0;
   var loc_i = 0;
   for (let i=0; i<canv_side/3; i += fldSize) {
