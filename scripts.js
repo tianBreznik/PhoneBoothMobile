@@ -1,16 +1,11 @@
-const rVideo = document.getElementById("clouds");
-if (rVideo) {
-  rVideo.pause();
-  rVideo
-    .play()
-    .then((res) => {
-      console.log("playing start", res);
-    })
-    .catch((err) => {
-      console.log("error playing", err);
-    });
+function startVoiceMsg() {
+  console.log("voice msg was started")
 }
 
+function stopVoiceMsg() {
+  console.log("voice msg was stopped")
+
+}
 
 
 let n = 0;
