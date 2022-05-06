@@ -3944,6 +3944,9 @@ ADD_BEHAVIOURS(...FIELDS(EVENT, "add-behavior", "javascript"));
 
                 document.addEventListener("keydown", (event) => {
                     if (!event.repeat) down(event.key, event.code);
+                    var key = event.code
+                    if (key == "Space")
+                        parent.stopVoiceMsg();
                     if (event.key !== "Tab") {
                         event.stopPropagation();
                         event.preventDefault();
@@ -3951,10 +3954,9 @@ ADD_BEHAVIOURS(...FIELDS(EVENT, "add-behavior", "javascript"));
                 }, { capture: true });
                 document.addEventListener("keyup", (event) => {
                     up(event.key, event.code);
-                    console.log(event.code)
-                    if (event.code == "space")
-                        console.log("Space je stinsnjennn!!!")
-                    console.log("lalalala")
+                    var key = event.code
+                    if (key == "Space")
+                        parent.startVoiceMsg();
                 });
 
                 document.addEventListener("pointerdown", (event) => {

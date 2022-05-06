@@ -1,10 +1,19 @@
+var voicePlaying = false;
+
 function startVoiceMsg() {
-  console.log("voice msg was started")
+  if (voicePlaying == false) {
+    console.log("voice msg was started")
+    voicePlaying = true;
+
+  }
 }
 
 function stopVoiceMsg() {
-  console.log("voice msg was stopped")
+  if (voicePlaying == true) {
+    console.log("voice msg was stopped")
+    voicePlaying = false;
 
+  }
 }
 
 
@@ -40,7 +49,6 @@ function preload() {
 
 function onSoundLoadSuccess(e) {
   console.log("load sound success", e);
-  e.play();
 }
 function onSoundLoadError(e) {
   console.log("load sound error", e);
@@ -90,7 +98,7 @@ function setup() {
   sound.setVolume(0.5);
   sound.amp(0.2);
   sound.play()
-  console.log(sound.isPlaying());
+  console.log(spectrum);
 }
 
 function draw() {
