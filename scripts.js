@@ -1,3 +1,18 @@
+const rVideo = document.getElementById("clouds");
+if (rVideo) {
+  rVideo.pause();
+  rVideo
+    .play()
+    .then((res) => {
+      console.log("playing start", res);
+    })
+    .catch((err) => {
+      console.log("error playing", err);
+    });
+}
+
+
+
 let n = 0;
 let a, c;
 let palette = ["#edb92e", "#c6363c", "#a12d2e", "#0c4076", "#644a3a"];
@@ -5,6 +20,7 @@ let pg;
 let s;
 let pgFrame;
 let bgColor, lineColor;
+
 
 let nx = 0.0;
 let ny = 0.0;
@@ -108,19 +124,19 @@ function getBipsiVar(varname) {
 function drawStream() {
   nx = 0;
   var loc_i = 0;
-  for (let i=0; i<canv_side/3; i += fldSize) {
+  for (let i = 0; i < canv_side / 3; i += fldSize) {
     ny = 0;
     var loc_j = 0;
-    for (let j=0; j<canv_side/3; j += fldSize) {
-      var angle = map (noise (nx, ny, nz), 0, 2.0, 0, piMult*PI);
-      var x = ampMultX * cos (angle);
-      var y = ampMultY * sin (angle);
-      line (loc_i+55, loc_j+55, loc_i+55+x, loc_j+55+y);
+    for (let j = 0; j < canv_side / 3; j += fldSize) {
+      var angle = map(noise(nx, ny, nz), 0, 2.0, 0, piMult * PI);
+      var x = ampMultX * cos(angle);
+      var y = ampMultY * sin(angle);
+      line(loc_i + 55, loc_j + 55, loc_i + 55 + x, loc_j + 55 + y);
       ny += 0.03;
 
       //gradient
       //var c = map(angle, 0, PI, 0, TWO_PI)
-			//stroke(c,50,80);
+      //stroke(c,50,80);
       loc_j += fldSize + 15;
     }
     nx += 0.02;
