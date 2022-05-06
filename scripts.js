@@ -1,10 +1,46 @@
-var voicePlaying = false;
+/*
+VOICE MESSAGE HANDLING
 
-function startVoiceMsg() {
+
+!!!!!!!!!!!!!!!!!!!
+IMPORTANT: za lažje testiranje se trenutno voice msg zacne on key down in ustavi on key up!
+DRŽI SPACE == IGRAJ MSG!
+!!!!!!!!!!!!!!!!!!!
+
+
+startVoiceMsg -> zance igrati sound. location doloci kasken sound bo igral
+  - "start" -> navodila za uporabo govorilnice
+  - "near" -> slovenski voice messagi
+  - "far" -> angleški voice messagi
+
+stopVoiceMsg -> ce poslusalec odlozi slusalko prehitro se pauzira voice msg z fadom
+
+  TODO: pogruntaj če bi kam dala voice messege, ki niso v slovenscini? ali jih sploh hocema?
+
+*/
+
+var voicePlaying = false;
+var currentSound
+
+function startVoiceMsg(location = "start") {
   if (voicePlaying == false) {
     console.log("voice msg was started")
     voicePlaying = true;
 
+    console.log("Location is ", location)
+
+    //zberi pravilen sound
+    if (location == "start") {
+      currentSound = startSound
+    } else if (location == "near")
+      currentSound = random(sloArray)
+    else if (location == "far")
+      currentSound = random(engArray)
+
+
+    // začni igrait current sound
+    //currentSound.setVolume(1);
+    currentSound.play();
   }
 }
 
@@ -12,6 +48,8 @@ function stopVoiceMsg() {
   if (voicePlaying == true) {
     console.log("voice msg was stopped")
     voicePlaying = false;
+
+    currentSound.pause();
 
   }
 }
@@ -39,22 +77,41 @@ var ampMultY = 80;
 var oscTempo = 0.05;
 
 let canv_side = 512;
-let sound;
+
+//SOUNDS
+let startSound;
+
+let slo1, slo2, slo3, slo4, slo5, slo6, slo7;
+let sloArray;
+
+let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
+let engArray;
 
 function preload() {
   console.log("preloading")
   soundFormats('mp3');
-  sound = loadSound('libraries/mariemubi', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  //load slo sounds
+  slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo2 = loadSound('assets/slo/eva2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo3 = loadSound('assets/slo/eva3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo4 = loadSound('assets/slo/luka1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  sloArray = [slo1, slo2, slo3, slo4, slo5]
+  //load eng sounds
+
 }
 
 function onSoundLoadSuccess(e) {
-  console.log("load sound success", e);
+  //console.log("load sound success", e);
 }
 function onSoundLoadError(e) {
   console.log("load sound error", e);
 }
 function onSoundLoadProgress(e) {
-  console.log("load sound progress", e);
+  //console.log("load sound progress", e);
 }
 
 function setup() {
@@ -86,27 +143,21 @@ function setup() {
 
   s = min(width, height);
 
-  let fft = new p5.FFT();
-  console.log(sound);
-  fft.setInput(sound);
-
   strokeWeight(5);
   //stroke(lineColor);
   stroke(255, 255, 0, 50);
   noFill();
-  let spectrum = fft.waveform();
-  sound.setVolume(0.5);
-  sound.amp(0.2);
-  sound.play()
-  console.log(spectrum);
+
+
+  //sound playing stuff
 }
 
 function draw() {
 
   //pg.loadPixels();
-  background(38, 13, 89, 50);
+  //background(38, 13, 89, 50);
 
-  drawStream();
+  //drawStream();
   // for (let i = 0; i < pg.width; i++) {
   //   for (let j = 0; j < pg.height; j++) {
   //     n = noise(0.01002503 * i + mouseX/1000, 0.01003463 * j + mouseY/1000);
@@ -121,7 +172,7 @@ function draw() {
 
   //image(pgFrame, width / 2, height / 2);
 
-  square(25, 25, s * 0.9);
+  circle(256, 256, 300)
 }
 
 //TODO: dodaj tracking za to v kateri sobi je igralec
