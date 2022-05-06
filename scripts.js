@@ -19,18 +19,30 @@ var ampMultY = 80;
 var oscTempo = 0.05;
 
 let canv_side = 512;
-let mySound;
+let sound;
 
 function preload() {
   console.log("preloading")
-  soundFormats('m4a');
-  mySound = loadSound('assets/mariemubi');
+  soundFormats('mp3');
+  sound = loadSound('libraries/mariemubi', onSoundLoadSuccess,onSoundLoadError,onSoundLoadProgress);
+}
+
+function onSoundLoadSuccess(e){
+  console.log("load sound success",e);
+  e.play();
+}
+function onSoundLoadError(e){
+  console.log("load sound error",e);
+}
+function onSoundLoadProgress(e){
+  console.log("load sound progress",e);
 }
 
 function setup() {
   console.log("blabla")
   var canvas = createCanvas(canv_side, canv_side);
   var gui = createGui('Experimenting GUI');
+
 
   frameRate(20)
   gui.setPosition(2.15 * width, 25);
@@ -54,25 +66,27 @@ function setup() {
   lineColor = palette[1];
 
   s = min(width, height);
-  //pg = createGraphics(400, 400);
 
-  //pgFrame = createGraphics(width, height);
-  //pgFrame.background(bgColor);
-  //pgFrame.erase();
-  //pgFrame.square(25, 25, s * 0.9);
-  //pgFrame.noErase();
+  let fft = new p5.FFT();
+  console.log(sound);
+  fft.setInput(sound);
 
   strokeWeight(5);
   //stroke(lineColor);
   stroke(255, 255, 0, 50);
   noFill();
-  mySound.play();
+  let spectrum = fft.waveform();
+  sound.setVolume(0.5);
+  sound.amp(0.2);
+  sound.play()
+  console.log(sound.isPlaying());
 }
 
 function draw() {
 
   //pg.loadPixels();
   background(38, 13, 89, 50);
+  sound.play();
 
   drawStream();
   // for (let i = 0; i < pg.width; i++) {
@@ -127,4 +141,13 @@ function drawStream() {
     loc_i += fldSize + 15;
   }
   nz += oscTempo; //tempo
+}
+
+function togglePlay() {
+  if (sound.isPlaying()) {
+    sound.pause();
+  } else {
+    sound.loop();
+    console.log("playing");
+  }
 }
