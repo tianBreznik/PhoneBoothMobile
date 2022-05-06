@@ -3,7 +3,7 @@ VOICE MESSAGE HANDLING
 
 
 !!!!!!!!!!!!!!!!!!!
-IMPORTANT: za lažje testiranje se trenutno voice msg zacne on key down in ustavi on key up!
+IMPORTANT: za lažje testiranje se trenutno voice msg zacne on key down in ustavi on key up
 DRŽI SPACE == IGRAJ MSG!
 !!!!!!!!!!!!!!!!!!!
 
@@ -15,15 +15,25 @@ startVoiceMsg -> zance igrati sound. location doloci kasken sound bo igral
 
 stopVoiceMsg -> ce poslusalec odlozi slusalko prehitro se pauzira voice msg z fadom
 
-  TODO: pogruntaj če bi kam dala voice messege, ki niso v slovenscini? ali jih sploh hocema?
-
+TODO:
+- [ ] pogruntaj če bi kam dala voice messege, ki niso v slovenscini? ali jih sploh hocema?
+- [ ] naredi array selection 0-exclusive in naj se potem shuffla zadnji selected thing vedno v 0-position
+- [x] fadaj zvok, ko pauziras voice message //done ampak kinda shady
+- [ ] testiraj performance na tablici
+- [ ] vizualizacija/risanje vsakega zvocnega efekta
+- [ ] menjaj space up/down tako kot mora bit
+- [ ] menjaj voice message na podlagi tega kje smo
 */
 
 var voicePlaying = false;
 var currentSound
 
-function startVoiceMsg(location = "start") {
+function startVoiceMsg() {
+
+
   if (voicePlaying == false) {
+    var location = getBipsiVar("location")
+
     console.log("voice msg was started")
     voicePlaying = true;
 
@@ -39,7 +49,7 @@ function startVoiceMsg(location = "start") {
 
 
     // začni igrait current sound
-    //currentSound.setVolume(1);
+    currentSound.setVolume(1);
     currentSound.play();
   }
 }
@@ -49,7 +59,9 @@ function stopVoiceMsg() {
     console.log("voice msg was stopped")
     voicePlaying = false;
 
-    currentSound.pause();
+    currentSound.setVolume(0, 0.5);
+    setTimeout(() => { currentSound.pause() }, 500);
+    //currentSound.pause();
 
   }
 }
@@ -102,6 +114,19 @@ function preload() {
   sloArray = [slo1, slo2, slo3, slo4, slo5]
   //load eng sounds
 
+  //load eng sounds
+  eng1 = loadSound('assets/eng/fer', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng2 = loadSound('assets/eng/lucas1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng3 = loadSound('assets/eng/marie1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng4 = loadSound('assets/eng/marie2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng5 = loadSound('assets/eng/mathias1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng6 = loadSound('assets/eng/rebecca', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng7 = loadSound('assets/eng/sarah1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng8 = loadSound('assets/eng/sarah2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng9 = loadSound('assets/eng/sarah3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10]
 }
 
 function onSoundLoadSuccess(e) {
@@ -171,16 +196,17 @@ function draw() {
   //image(pg, width / 2, height / 2, s, s);
 
   //image(pgFrame, width / 2, height / 2);
-
   circle(256, 256, 300)
 }
 
-//TODO: dodaj tracking za to v kateri sobi je igralec
 function getBipsiVar(varname) {
   const bipsi = document.getElementById("bipsi").contentWindow
-  console.log(bipsi)
+  //console.log("PRINTING BIPSI")
+  //console.log(bipsi)
+  //console.log("PRINTING OVER")
 
-  console.log("Fetching variable of name: ", varname)
+
+  //console.log("Fetching variable of name: ", varname)
 
   var r = bipsi.PLAYBACK.variables.get(varname)
   console.log("VALUE OF ", varname, " IS: ", r)
@@ -210,13 +236,4 @@ function drawStream() {
     loc_i += fldSize + 15;
   }
   nz += oscTempo; //tempo
-}
-
-function togglePlay() {
-  if (sound.isPlaying()) {
-    sound.pause();
-  } else {
-    sound.loop();
-    console.log("playing");
-  }
 }
