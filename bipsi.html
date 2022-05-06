@@ -3951,6 +3951,9 @@ ADD_BEHAVIOURS(...FIELDS(EVENT, "add-behavior", "javascript"));
                 }, { capture: true });
                 document.addEventListener("keyup", (event) => {
                     up(event.key, event.code);
+                    console.log(event.code)
+                    if (event.code == "space")
+                        console.log("Space je stinsnjennn!!!")
                     console.log("lalalala")
                 });
 

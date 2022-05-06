@@ -35,18 +35,18 @@ let sound;
 function preload() {
   console.log("preloading")
   soundFormats('mp3');
-  sound = loadSound('libraries/mariemubi', onSoundLoadSuccess,onSoundLoadError,onSoundLoadProgress);
+  sound = loadSound('libraries/mariemubi', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 }
 
-function onSoundLoadSuccess(e){
-  console.log("load sound success",e);
+function onSoundLoadSuccess(e) {
+  console.log("load sound success", e);
   e.play();
 }
-function onSoundLoadError(e){
-  console.log("load sound error",e);
+function onSoundLoadError(e) {
+  console.log("load sound error", e);
 }
-function onSoundLoadProgress(e){
-  console.log("load sound progress",e);
+function onSoundLoadProgress(e) {
+  console.log("load sound progress", e);
 }
 
 function setup() {
@@ -97,7 +97,6 @@ function draw() {
 
   //pg.loadPixels();
   background(38, 13, 89, 50);
-  sound.play();
 
   drawStream();
   // for (let i = 0; i < pg.width; i++) {
