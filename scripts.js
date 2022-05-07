@@ -98,14 +98,13 @@ function preload() {
 }
 
 function onSoundLoadSuccess(e) {
-  console.log("load sound success", e);
-  //e.play();
+  //console.log("load sound success", e);
 }
 function onSoundLoadError(e) {
   console.log("load sound error", e);
 }
 function onSoundLoadProgress(e) {
-  console.log("load sound progress", e);
+  //console.log("load sound progress", e);
 }
 //#endregion
 
