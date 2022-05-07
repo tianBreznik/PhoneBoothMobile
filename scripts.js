@@ -32,15 +32,18 @@ var oscTempo = 0.05;
 let canv_side = 512;
 let sound;
 
+var spec_hist = [];
+var amp;
+
 function preload() {
   console.log("preloading")
-  soundFormats('mp3');
+  soundFormats('m4a');
   sound = loadSound('libraries/mariemubi', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 }
 
 function onSoundLoadSuccess(e) {
   console.log("load sound success", e);
-  e.play();
+  //e.play();
 }
 function onSoundLoadError(e) {
   console.log("load sound error", e);
@@ -78,41 +81,36 @@ function setup() {
 
   s = min(width, height);
 
-  let fft = new p5.FFT();
+  //let fft = new p5.FFT();
   console.log(sound);
-  fft.setInput(sound);
+  //fft.setInput(sound);
 
   strokeWeight(5);
   //stroke(lineColor);
   stroke(255, 255, 0, 50);
   noFill();
-  let spectrum = fft.waveform();
   sound.setVolume(0.5);
   sound.amp(0.2);
   sound.play()
-  console.log(sound.isPlaying());
+  amp = new p5.Amplitude()
 }
 
 function draw() {
 
   //pg.loadPixels();
   background(38, 13, 89, 50);
+  let fft = new p5.FFT();
+  fft.setInput(sound);
+  let spectrum = fft.waveform();
+  console.log(spectrum);
 
   drawStream();
-  // for (let i = 0; i < pg.width; i++) {
-  //   for (let j = 0; j < pg.height; j++) {
-  //     n = noise(0.01002503 * i + mouseX/1000, 0.01003463 * j + mouseY/1000);
-  //     a = map(n + frameCount * 0.0005, 0, 1, 0, 100);
-  //     c = palette[floor(a % 13) % palette.length];
-  //     pg.set(i, j, color(c));
-  //   }
-  // }
-  //pg.updatePixels();
-
-  //image(pg, width / 2, height / 2, s, s);
-
-  //image(pgFrame, width / 2, height / 2);
-
+  var currvol = amp.getLevel();
+  spec_hist.push(currvol);
+  for(var i=0; i < spec_hist.length;i++){
+    var y = map(spec_hist[i], 0, 1, height, 0)
+  }
+  console.log(currvol);
   square(25, 25, s * 0.9);
 }
 
