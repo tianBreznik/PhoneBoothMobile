@@ -25,14 +25,18 @@ TODO:
 - [x] menjaj voice message na podlagi tega kje smo
 */
 
+
+
+// VOICE STUFF
+//#region SOUND
 var voicePlaying = false;
 var currentSound
 
-function startVoiceMsg() {
+function startVoiceMsg(location = "start") {
 
 
   if (voicePlaying == false) {
-    var location = getBipsiVar("location")
+
     console.log("voice msg was started")
     voicePlaying = true;
 
@@ -57,7 +61,6 @@ function stopVoiceMsg() {
   currentSound.pause();
   currentSound.setVolume(0, 0.5);
   setTimeout(() => { currentSound.pause() }, 500);
-
 }
 
 let startSound;
@@ -104,7 +107,12 @@ function onSoundLoadError(e) {
 function onSoundLoadProgress(e) {
   console.log("load sound progress", e);
 }
+//#endregion
 
+
+// PROCESSING STUFF
+//#region processing
+var canv_side = 512;
 function setup() {
   console.log("blabla")
   var canvas = createCanvas(canv_side, canv_side);
@@ -140,21 +148,6 @@ function draw() {
 
 
 
-function keyPressed() {
-}
-
-//TODO: dodaj tracking za to v kateri sobi je igralec
-function getBipsiVar(varname) {
-  const bipsi = document.getElementById("bipsi").contentWindow
-  console.log(bipsi)
-
-  console.log("Fetching variable of name: ", varname)
-
-  var r = bipsi.PLAYBACK.variables.get(varname)
-  console.log("VALUE OF ", varname, " IS: ", r)
-  return r
-}
-
 //second experiment - lines
 function drawStream() {
   nx = 0;
@@ -179,15 +172,19 @@ function drawStream() {
   }
   nz += oscTempo; //tempo
 }
-
+//#endregion
 
 // BRINOV WORKSPACE DONT TOUCH
+var pos;
 function worldSetup() {
+  pos = createVector(1, 1)
+
 
 }
 
 
 function worldDraw() {
-
+  console.log("drawing")
+  text("POSITION: X:" + pos.x + " Y:" + pos.y, 30, 30)
 }
 
