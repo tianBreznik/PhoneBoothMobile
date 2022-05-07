@@ -115,17 +115,9 @@ function onSoundLoadProgress(e) {
 var canv_side = 512;
 function setup() {
   console.log("blabla")
-  var canvas = createCanvas(canv_side, canv_side);
-  var gui = createGui('Experimenting GUI');
-
-  pos = createVector(1, 1)
   frameRate(20)
 
   s = min(width, height);
-
-  //let fft = new p5.FFT();
-  console.log(sound);
-  //fft.setInput(sound);
 
   strokeWeight(5);
   //stroke(lineColor);
@@ -179,12 +171,12 @@ var pos;
 function worldSetup() {
   pos = createVector(1, 1)
 
-
 }
 
 
 function worldDraw() {
   console.log("drawing")
   text("POSITION: X:" + pos.x + " Y:" + pos.y, 30, 30)
+
 }
 
