@@ -96,7 +96,7 @@ function setup() {
 }
 
 function draw() {
-
+  
   //pg.loadPixels();
   background(38, 13, 89, 50);
   let fft = new p5.FFT();
