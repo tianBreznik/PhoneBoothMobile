@@ -33,7 +33,7 @@ var vClouds = document.getElementById("clouds");
 var voicePlaying = false;
 var currentSound
 
-function startVoiceMsg(location = "start") {
+function startVoiceMsg() {
 
 
   if (voicePlaying == false) {
@@ -44,11 +44,11 @@ function startVoiceMsg(location = "start") {
     console.log("Location is ", location)
 
     //zberi pravilen sound
-    if (location == "start") {
+    if (distance < 0) {
       currentSound = startSound
-    } else if (location == "near")
+    } else if (distance < 2)
       currentSound = random(sloArray)
-    else if (location == "far")
+    else if (distance < 3)
       currentSound = random(engArray)
 
 
@@ -188,7 +188,7 @@ function worldPreload() {
 
 var pos;
 var startPos;
-var distance; //distance from start pos
+var distance = 0; //distance from start pos
 
 
 var wWidth = 3;
