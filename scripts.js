@@ -25,6 +25,7 @@ TODO:
 - [x] menjaj voice message na podlagi tega kje smo
 */
 
+var vClouds = document.getElementById("clouds");
 
 
 // VOICE STUFF
@@ -58,9 +59,11 @@ function startVoiceMsg(location = "start") {
 }
 
 function stopVoiceMsg() {
-  currentSound.pause();
+  voicePlaying = false;
   currentSound.setVolume(0, 0.5);
-  setTimeout(() => { currentSound.pause() }, 500);
+  setTimeout(() => {
+    currentSound.pause()
+  }, 500);
 }
 
 let startSound;
@@ -136,7 +139,12 @@ function draw() {
   clear();
   worldDraw();
 
-
+  if (keyWentDown("space")) {
+    console.log("space down!")
+    startVoiceMsg()
+  }
+  if (keyWentUp("space"))
+    stopVoiceMsg()
 
 }
 
@@ -243,6 +251,7 @@ function worldMove(xx = 0, yy = 0) {
   distance = dist(pos.x, pos.y, 1, 1)
 
 
+
 }
 
 
@@ -261,3 +270,7 @@ function drawWorldRoom() {
 
   drawSprites()
 }
+
+
+
+//background video opacity manamgnet
