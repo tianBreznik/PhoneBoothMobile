@@ -54,54 +54,21 @@ function startVoiceMsg() {
 }
 
 function stopVoiceMsg() {
-  if (voicePlaying == true) {
-    console.log("voice msg was stopped")
-    voicePlaying = false;
+  currentSound.pause();
+  currentSound.setVolume(0, 0.5);
+  setTimeout(() => { currentSound.pause() }, 500);
 
-    currentSound.setVolume(0, 0.5);
-    setTimeout(() => { currentSound.pause() }, 500);
-    //currentSound.pause();
-
-  }
 }
 
-
-let n = 0;
-let a, c;
-let palette = ["#edb92e", "#c6363c", "#a12d2e", "#0c4076", "#644a3a"];
-let pg;
-let s;
-let pgFrame;
-let bgColor, lineColor;
-
-
-let nx = 0.0;
-let ny = 0.0;
-let nz = 0.0;
-
-// gui test
-var fldSize = 12;
-//let fldColor = color(255, 0, 0);
-var piMult = 7;
-var ampMultX = 80;
-var ampMultY = 80;
-var oscTempo = 0.05;
-
-let canv_side = 512;
-
-//SOUNDS
 let startSound;
-
 let slo1, slo2, slo3, slo4, slo5, slo6, slo7;
 let sloArray;
-
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
 let engArray;
 
 function preload() {
   console.log("preloading")
   soundFormats('mp3');
-
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   //load slo sounds
   slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -109,7 +76,6 @@ function preload() {
   slo3 = loadSound('assets/slo/eva3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo4 = loadSound('assets/slo/luka1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
   sloArray = [slo1, slo2, slo3, slo4, slo5]
   //load eng sounds
 
@@ -129,13 +95,14 @@ function preload() {
 }
 
 function onSoundLoadSuccess(e) {
-  //console.log("load sound success", e);
+  console.log("load sound success", e);
+  //e.play();
 }
 function onSoundLoadError(e) {
   console.log("load sound error", e);
 }
 function onSoundLoadProgress(e) {
-  //console.log("load sound progress", e);
+  console.log("load sound progress", e);
 }
 
 function setup() {
@@ -147,6 +114,10 @@ function setup() {
   frameRate(20)
 
   s = min(width, height);
+
+  //let fft = new p5.FFT();
+  console.log(sound);
+  //fft.setInput(sound);
 
   strokeWeight(5);
   //stroke(lineColor);
@@ -162,23 +133,22 @@ function setup() {
 function draw() {
   clear();
   worldDraw();
+
+
+
 }
 
 
-var row = 1;
-var col = 1;
 
 function keyPressed() {
 }
 
+//TODO: dodaj tracking za to v kateri sobi je igralec
 function getBipsiVar(varname) {
   const bipsi = document.getElementById("bipsi").contentWindow
-  //console.log("PRINTING BIPSI")
-  //console.log(bipsi)
-  //console.log("PRINTING OVER")
+  console.log(bipsi)
 
-
-  //console.log("Fetching variable of name: ", varname)
+  console.log("Fetching variable of name: ", varname)
 
   var r = bipsi.PLAYBACK.variables.get(varname)
   console.log("VALUE OF ", varname, " IS: ", r)
