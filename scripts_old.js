@@ -143,7 +143,7 @@ function setup() {
   var canvas = createCanvas(canv_side, canv_side);
   var gui = createGui('Experimenting GUI');
 
-  pos = createVector(1, 1)
+
   frameRate(20)
 
   s = min(width, height);
@@ -151,24 +151,25 @@ function setup() {
   strokeWeight(5);
   //stroke(lineColor);
   stroke(255, 255, 0, 50);
+  noFill();
 
-
-  worldSetup();
 
   //sound playing stuff
 }
 
-
-function draw() {
-  clear();
-  worldDraw();
-}
-
-
 var row = 1;
 var col = 1;
 
+function draw() {
+  // clear()
+
+}
+
 function keyPressed() {
+  console.log("hello???")
+  clear();
+  textSize(50)
+  text(key)
 }
 
 function getBipsiVar(varname) {
@@ -209,15 +210,3 @@ function drawStream() {
   }
   nz += oscTempo; //tempo
 }
-
-
-// BRINOV WORKSPACE DONT TOUCH
-function worldSetup() {
-
-}
-
-
-function worldDraw() {
-
-}
-
