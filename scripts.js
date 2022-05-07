@@ -71,6 +71,8 @@ let engArray;
 
 function preload() {
   console.log("preloading")
+  worldPreload();
+
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   //load slo sounds
@@ -115,6 +117,7 @@ var canv_side = 512;
 function setup() {
   console.log("blabla")
   frameRate(20)
+  createCanvas(canv_side, canv_side)
 
   s = min(width, height);
 
@@ -166,16 +169,95 @@ function drawStream() {
 //#endregion
 
 // BRINOV WORKSPACE DONT TOUCH
+let imgTwo, imgFour, imgSix, imgEight;
+let sLeft, sUp, sRight, sDown;
+function worldPreload() {
+  imgTwo = loadImage("assets/sprites/two.png")
+  imgFour = loadImage("assets/sprites/four.png")
+  imgSix = loadImage("assets/sprites/six.png")
+  imgEight = loadImage("assets/sprites/eight.png")
+}
+
 var pos;
+var startPos;
+var distance; //distance from start pos
+
+
+var wWidth = 3;
+var wHeight = 3;
 function worldSetup() {
   pos = createVector(1, 1)
+  console.log(pos.x)
 
+  sLeft = createSprite(32, 256)
+  sLeft.addImage(imgFour)
+  sLeft.scale = 3
+  sUp = createSprite(256, 32)
+  sUp.addImage(imgTwo)
+  sUp.scale = 3
+  sRight = createSprite(480, 256)
+  sRight.addImage(imgSix)
+  sRight.scale = 3
+  sDown = createSprite(256, 480)
+  sDown.addImage(imgEight)
+  sDown.scale = 3
 }
 
 
 function worldDraw() {
-  console.log("drawing")
-  text("POSITION: X:" + pos.x + " Y:" + pos.y, 30, 30)
+  fill(0, 30)
+  square(0, 0, 512)
+  fill(255)
+  //noStroke()
+  text("X: " + pos.x, 10, 20)
+  text("Y: " + pos.y, 10, 40)
+  text("Dist: " + distance, 10, 60)
+  // image(imgwto)
+  noSmooth()
+  drawWorldRoom()
 
 }
 
+
+function keyPressed() {
+  if (keyCode == 37) //left
+    worldMove(-1, 0)
+  else if (keyCode == 38) //up
+    worldMove(0, -1)
+  else if (keyCode == 39) //right
+    worldMove(1, 0)
+  else if (keyCode == 40) //down
+    worldMove(0, 1)
+}
+
+
+function worldMove(xx = 0, yy = 0) {
+  var moveVector = createVector(xx, yy)
+  pos.add(moveVector)
+
+  pos.x = Math.max(pos.x, 1)
+  pos.x = Math.min(pos.x, wWidth)
+  pos.y = Math.max(pos.y, 1)
+  pos.y = Math.min(pos.y, wHeight)
+
+  distance = dist(pos.x, pos.y, 1, 1)
+
+
+}
+
+
+function drawWorldRoom() {
+  if (pos.x == 1) sLeft.visible = false;
+  else sLeft.visible = true;
+
+  if (pos.x == wWidth) sRight.visible = false;
+  else sRight.visible = true;
+
+  if (pos.y == 1) sUp.visible = false;
+  else sUp.visible = true;
+
+  if (pos.y == wHeight) sDown.visible = false;
+  else sDown.visible = true;
+
+  drawSprites()
+}
