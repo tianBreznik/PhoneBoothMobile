@@ -32,7 +32,8 @@ var currentSound;
 let graphics;
 var stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
 var stroke_width;
-var perturbation;
+var perturbation_x;
+var perturbation_y;
 
 function startVoiceMsg() {
 
@@ -43,7 +44,9 @@ function startVoiceMsg() {
     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
     stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
-    perturbation =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 30, 75);
+    perturbation_x =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 10, 100);
+    perturbation_y =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 10, 100);
+    prev_vol = null;
     pdy = map(Math.random(), 0, 1, 0, 0.1);
 
     console.log("Location is ", location)
@@ -179,13 +182,13 @@ function draw() {
     if(prev_vol == null){
       prev_vol = 10*noise(sin(TWO_PI/(Math.random()*10)),cos(TWO_PI/(Math.random()*5)),pdy);
       //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
-      prev_y = prev_vol*sin(pdy) + Math.random() * 5 + height/2 + perturbation;
-      prev_x = prev_vol*cos(pdy) + width/2 + perturbation;
+      prev_y = r*sin(pdy-0.01) + Math.random() * 5 + height/2 + perturbation_y;
+      prev_x = r*cos(pdy-0.01) + width/2 + perturbation_x;
   
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0);
       //curr_x = 100*noise(pdy) + Math.random()*50;
-      curr_y = r * sin(pdy+0.01) + height/2 + r*noise(pdy) + perturbation;
-      curr_x = r * cos(pdy+0.01) + width/2 + r*noise(pdy) + perturbation;
+      curr_y = r * sin(pdy+0.01) + height/2 + r*noise(pdy) + perturbation_y;
+      curr_x = r * cos(pdy+0.01) + width/2 + r*noise(pdy) + perturbation_x;
       //graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
@@ -194,8 +197,8 @@ function draw() {
     else{
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
       //curr_x = 100*noise(pdy) + Math.random() * 100;
-      curr_y = r * sin(pdy) + height/2 + r*noise(pdy) + perturbation;
-      curr_x = r * cos(pdy) + width/2 + r*noise(pdy) + perturbation;
+      curr_y = r * sin(pdy) + height/2 + r*noise(pdy) + perturbation_y;
+      curr_x = r * cos(pdy) + width/2 + r*noise(pdy) + perturbation_x;
       graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
