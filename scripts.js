@@ -34,6 +34,8 @@ var stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
 var stroke_width;
 var perturbation_x;
 var perturbation_y;
+var new_low = 100;
+var new_high = 500;
 
 function startVoiceMsg() {
 
@@ -44,10 +46,13 @@ function startVoiceMsg() {
     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
     stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
-    perturbation_x =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 10, 100);
-    perturbation_y =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 10, 100);
+    perturbation_x =  map(Math.random(), 0, 1, -100, 100);
+    perturbation_y =  map(Math.random(), 0, 1, -100, 100);
     prev_vol = null;
+    new_low = map(Math.random(), 0, 1, 10, 100);
+    new_high = map(Math.random(), 0, 1, 50, 300);
     pdy = map(Math.random(), 0, 1, 0, 0.1);
+    noiseSeed(map(Math.random(), 0,1, 1, 99));
 
     console.log("Location is ", location)
 
@@ -177,8 +182,8 @@ function draw() {
   var curr_vol = amp.getLevel();
 
   if(voicePlaying){
-    r = map(curr_vol, 0, 1, 100, 250) + noise(curr_vol) * 50;
-    //graphics.translate(width/3, height/3);
+    //var curr_vol = amp.getLevel();
+    r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * 50 * pdy;
     if(prev_vol == null){
       prev_vol = 10*noise(sin(TWO_PI/(Math.random()*10)),cos(TWO_PI/(Math.random()*5)),pdy);
       //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
@@ -197,15 +202,23 @@ function draw() {
     else{
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
       //curr_x = 100*noise(pdy) + Math.random() * 100;
-      curr_y = r * sin(pdy) + height/2 + r*noise(pdy) + perturbation_y;
-      curr_x = r * cos(pdy) + width/2 + r*noise(pdy) + perturbation_x;
+      curr_y = r * sin(pdy+curr_vol) + height/2 + r*noise(pdy) + perturbation_y;
+      curr_x = r * cos(pdy+curr_vol) + width/2 + r*noise(pdy) + perturbation_x;
+      // graphics.curve(
+      //   prev_x, prev_y,
+      //   prev_x + noise(pdy)*5, 
+      //   prev_y + noise(pdy+0.5)*10,
+      //   curr_x - noise(pdy+0.02)*15, 
+      //   curr_y - noise(pdy)*2, 
+      //   curr_x,
+      //   curr_y);
       graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
       prev_y = curr_y;
     }
-    pdy+=0.05;
-  }
+   pdy+=0.05;
+ }
   
   console.log(curr_vol);
   image(graphics, 0, 0);
