@@ -1,5 +1,5 @@
 body {
-    background-color: aquamarine;
+    background-color: #fafafa;
 }
 
 #content {
@@ -43,9 +43,12 @@ video {
 
 
 #clouds {
-    opacity: 1;
+    opacity: 0;
+    transition: opacity 1s;
 }
 
 #night {
-    opacity: 0.5;
+    opacity: 0;
+    transition: opacity 3s;
+
 }

@@ -25,9 +25,6 @@ TODO:
 - [x] menjaj voice message na podlagi tega kje smo
 */
 
-var vClouds = document.getElementById("clouds");
-
-
 // VOICE STUFF
 //#region SOUND
 var voicePlaying = false;
@@ -145,6 +142,7 @@ function setup() {
 
 
   worldSetup();
+  //startVoiceMsg()
 
   //sound playing stuff
 }
@@ -281,6 +279,8 @@ function worldSetup() {
   sDown = createSprite(256, 480)
   sDown.addImage(imgEight)
   sDown.scale = 3
+
+  setVideoOpacities();
 }
 
 
@@ -295,20 +295,21 @@ function worldDraw() {
   // image(imgwto)
   noSmooth()
   drawWorldRoom()
+  worldMovement();
 
 }
 
-
-function keyPressed() {
-  if (keyCode == 37) //left
+function worldMovement() {
+  if (keyWentDown(37)) //left
     worldMove(-1, 0)
-  else if (keyCode == 38) //up
+  else if (keyWentDown(38)) //up
     worldMove(0, -1)
-  else if (keyCode == 39) //right
+  else if (keyWentDown(39)) //right
     worldMove(1, 0)
-  else if (keyCode == 40) //down
+  else if (keyWentDown(40)) //down
     worldMove(0, 1)
 }
+
 
 
 function worldMove(xx = 0, yy = 0) {
@@ -322,7 +323,7 @@ function worldMove(xx = 0, yy = 0) {
 
   distance = dist(pos.x, pos.y, 1, 1)
 
-
+  setVideoOpacities();
 
 }
 
@@ -346,3 +347,13 @@ function drawWorldRoom() {
 
 
 //background video opacity manamgnet
+
+var vClouds = document.getElementById("clouds");
+var vMoon = document.getElementById("moon")
+function setVideoOpacities() {
+  var distNorm = map(distance, 0, wWidth - 0.5, 0, 1, true)
+  var inverted = 1 - distNorm
+  console.log("Noramlised distance is ", distNorm, "\nInverted dist is: ", inverted)
+  vMoon.style.opacity = distNorm;
+  vClouds.style.opacity = inverted
+}
