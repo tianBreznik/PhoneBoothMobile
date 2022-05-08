@@ -30,7 +30,7 @@ TODO:
 var voicePlaying = false;
 var currentSound;
 let graphics;
-var stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
+var stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
 var stroke_width;
 var perturbation_x;
 var perturbation_y;
@@ -45,16 +45,17 @@ function startVoiceMsg() {
     console.log("voice msg was started")
     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
-    stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
-    perturbation_x =  map(Math.random(), 0, 1, -100, 100);
-    perturbation_y =  map(Math.random(), 0, 1, -100, 100);
+    stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    perturbation_x = map(Math.random(), 0, 1, -100, 100);
+    perturbation_y = map(Math.random(), 0, 1, -100, 100);
     prev_vol = null;
     new_low = map(Math.random(), 0, 1, 10, 100);
     new_high = map(Math.random(), 0, 1, 50, 300);
     pdy = map(Math.random(), 0, 1, 0, 0.1);
-    noiseSeed(map(Math.random(), 0,1, 1, 99));
+    noiseSeed(map(Math.random(), 0, 1, 1, 99));
 
     console.log("Location is ", location)
+    console.log("Distance is ", distance)
 
     //zberi pravilen sound
     if (distance < 0) {
@@ -63,21 +64,23 @@ function startVoiceMsg() {
       currentSound = random(sloArray)
     else if (distance < 3)
       currentSound = random(engArray)
+    else if (distance <= 4)
 
 
-    // začni igrait current sound
-    currentSound.setVolume(1);
+      // začni igrait current sound
+      currentSound.setVolume(1);
     currentSound.play();
   }
 }
 
 function stopVoiceMsg() {
   voicePlaying = false;
-  currentSound.setVolume(0, 0.5);
+  currentSound.setVolume(0, 0.3);
   setTimeout(() => {
     currentSound.pause()
   }, 500);
 }
+
 
 let startSound;
 let slo1, slo2, slo3, slo4, slo5, slo6, slo7;
@@ -89,7 +92,6 @@ var amp;
 
 function preload() {
   console.log("preloading")
-  worldPreload();
 
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -158,7 +160,7 @@ function setup() {
 var prev_vol;
 var prev_x;
 var prev_y;
-let pdy=0;
+let pdy = 0;
 var curr_x;
 var curr_y;
 var dx;
@@ -181,29 +183,29 @@ function draw() {
   graphics.noFill();
   var curr_vol = amp.getLevel();
 
-  if(voicePlaying){
+  if (voicePlaying) {
     //var curr_vol = amp.getLevel();
     r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * 50 * pdy;
-    if(prev_vol == null){
-      prev_vol = 10*noise(sin(TWO_PI/(Math.random()*10)),cos(TWO_PI/(Math.random()*5)),pdy);
+    if (prev_vol == null) {
+      prev_vol = 10 * noise(sin(TWO_PI / (Math.random() * 10)), cos(TWO_PI / (Math.random() * 5)), pdy);
       //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
-      prev_y = r*sin(pdy-0.01) + Math.random() * 5 + height/2 + perturbation_y;
-      prev_x = r*cos(pdy-0.01) + width/2 + perturbation_x;
-  
+      prev_y = r * sin(pdy - 0.01) + Math.random() * 5 + height / 2 + perturbation_y;
+      prev_x = r * cos(pdy - 0.01) + width / 2 + perturbation_x;
+
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0);
       //curr_x = 100*noise(pdy) + Math.random()*50;
-      curr_y = r * sin(pdy+0.01) + height/2 + r*noise(pdy) + perturbation_y;
-      curr_x = r * cos(pdy+0.01) + width/2 + r*noise(pdy) + perturbation_x;
+      curr_y = r * sin(pdy + 0.01) + height / 2 + r * noise(pdy) + perturbation_y;
+      curr_x = r * cos(pdy + 0.01) + width / 2 + r * noise(pdy) + perturbation_x;
       //graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
       prev_y = curr_y;
     }
-    else{
+    else {
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
       //curr_x = 100*noise(pdy) + Math.random() * 100;
-      curr_y = r * sin(pdy+curr_vol) + height/2 + r*noise(pdy) + perturbation_y;
-      curr_x = r * cos(pdy+curr_vol) + width/2 + r*noise(pdy) + perturbation_x;
+      curr_y = r * sin(pdy + curr_vol) + height / 2 + r * noise(pdy) + perturbation_y;
+      curr_x = r * cos(pdy + curr_vol) + width / 2 + r * noise(pdy) + perturbation_x;
       // graphics.curve(
       //   prev_x, prev_y,
       //   prev_x + noise(pdy)*5, 
@@ -217,10 +219,10 @@ function draw() {
       prev_x = curr_x;
       prev_y = curr_y;
     }
-   pdy+=0.05;
- }
-  
-  console.log(curr_vol);
+    pdy += 0.05;
+  }
+
+  //console.log(curr_vol);
   image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
@@ -229,7 +231,7 @@ function draw() {
   }
   if (keyWentUp("space"))
     stopVoiceMsg();
-  
+
 
 
 }
@@ -260,17 +262,10 @@ function drawStream() {
   }
   nz += oscTempo; //tempo
 }
-//#endregion
+//#endregion  fi
 
 // BRINOV WORKSPACE DONT TOUCH
-let imgTwo, imgFour, imgSix, imgEight;
-let sLeft, sUp, sRight, sDown;
-function worldPreload() {
-  imgTwo = loadImage("assets/sprites/two.png")
-  imgFour = loadImage("assets/sprites/four.png")
-  imgSix = loadImage("assets/sprites/six.png")
-  imgEight = loadImage("assets/sprites/eight.png")
-}
+
 
 var pos;
 var startPos;
@@ -283,18 +278,6 @@ function worldSetup() {
   pos = createVector(1, 1)
   console.log(pos.x)
 
-  sLeft = createSprite(32, 256)
-  sLeft.addImage(imgFour)
-  sLeft.scale = 3
-  sUp = createSprite(256, 32)
-  sUp.addImage(imgTwo)
-  sUp.scale = 3
-  sRight = createSprite(480, 256)
-  sRight.addImage(imgSix)
-  sRight.scale = 3
-  sDown = createSprite(256, 480)
-  sDown.addImage(imgEight)
-  sDown.scale = 3
 
   setVideoOpacities();
 }
@@ -308,9 +291,14 @@ function worldDraw() {
   text("X: " + pos.x, 10, 20)
   text("Y: " + pos.y, 10, 40)
   text("Dist: " + distance, 10, 60)
-  // image(imgwto)
+  text("isPlaying " + voicePlaying, 10, 80)
+  // :)))
+  if (voicePlaying)
+    if (!currentSound.isPlaying())
+      voicePlaying = false;
+
   noSmooth()
-  drawWorldRoom()
+  buttonOpacity()
   worldMovement();
 
 }
@@ -340,24 +328,30 @@ function worldMove(xx = 0, yy = 0) {
   distance = dist(pos.x, pos.y, 1, 1)
 
   setVideoOpacities();
+  stopVoiceMsg();
 
 }
 
 
-function drawWorldRoom() {
-  if (pos.x == 1) sLeft.visible = false;
-  else sLeft.visible = true;
 
-  if (pos.x == wWidth) sRight.visible = false;
-  else sRight.visible = true;
+var btnDva = document.getElementById("dva")
+var btnStiri = document.getElementById("stiri")
+var btnSest = document.getElementById("sest")
+var btnOsem = document.getElementById("osem")
 
-  if (pos.y == 1) sUp.visible = false;
-  else sUp.visible = true;
+function buttonOpacity() {
+  if (pos.x == 1) btnStiri.style.opacity = 0;
+  else btnStiri.style.opacity = 1
 
-  if (pos.y == wHeight) sDown.visible = false;
-  else sDown.visible = true;
+  if (pos.x == wWidth) btnSest.style.opacity = 0;
+  else btnSest.style.opacity = 1;
 
-  drawSprites()
+  if (pos.y == 1) btnDva.style.opacity = 0;
+  else btnDva.style.opacity = 1;
+
+  if (pos.y == wHeight) btnOsem.style.opacity = 0;
+  else btnOsem.style.opacity = 1;
+
 }
 
 

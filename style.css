@@ -52,3 +52,34 @@ video {
     transition: opacity 3s;
 
 }
+
+.btn {
+    display: block;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    pointer-events: none;
+    filter: drop-shadow(0px 0px 10px rgb(253, 255, 143));
+    transition: opacity 1s;
+
+}
+
+#dva {
+    top: 20%;
+    left: 50%;
+}
+
+#stiri {
+    top: 50%;
+    left: 30%;
+}
+
+#sest {
+    top: 50%;
+    left: 70%;
+}
+
+#osem {
+    top: 80%;
+    left: 50%;
+}
