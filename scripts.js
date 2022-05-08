@@ -31,7 +31,11 @@ var vClouds = document.getElementById("clouds");
 // VOICE STUFF
 //#region SOUND
 var voicePlaying = false;
-var currentSound
+var currentSound;
+let graphics;
+var stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
+var stroke_width;
+var perturbation;
 
 function startVoiceMsg() {
 
@@ -40,6 +44,10 @@ function startVoiceMsg() {
 
     console.log("voice msg was started")
     voicePlaying = true;
+    stroke_width = map(Math.random(), 0, 1, 1, 8);
+    stroke_col = "#" + Math.floor(Math.random()*16777215).toString(16);
+    perturbation =  (Math.random() < 0.5 ? -1 : 1) * map(Math.random(), 0, 1, 30, 75);
+    pdy = map(Math.random(), 0, 1, 0, 0.1);
 
     console.log("Location is ", location)
 
@@ -71,6 +79,8 @@ let slo1, slo2, slo3, slo4, slo5, slo6, slo7;
 let sloArray;
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
 let engArray;
+
+var amp;
 
 function preload() {
   console.log("preloading")
@@ -119,8 +129,11 @@ function onSoundLoadProgress(e) {
 var canv_side = 512;
 function setup() {
   console.log("blabla")
-  frameRate(20)
-  createCanvas(canv_side, canv_side)
+  frameRate(20);
+  //angleMode(DEGREES);
+  createCanvas(canv_side, canv_side);
+  pixelDensity(1);
+  graphics = createGraphics(canv_side, canv_side);
 
   s = min(width, height);
 
@@ -128,23 +141,82 @@ function setup() {
   //stroke(lineColor);
   stroke(255, 255, 0, 50);
 
+  amp = new p5.Amplitude();
+
 
   worldSetup();
 
   //sound playing stuff
 }
 
+var prev_vol;
+var prev_x;
+var prev_y;
+let pdy=0;
+var curr_x;
+var curr_y;
+var dx;
+var dy;
+var prev_dx;
+var prev_dy;
+
+let angle = 0;
+var r;
+
+var amps = [];
 
 function draw() {
   clear();
   worldDraw();
+
+  //linije
+  graphics.stroke(stroke_col);
+  graphics.strokeWeight(stroke_width);
+  graphics.noFill();
+  var curr_vol = amp.getLevel();
+
+  if(voicePlaying){
+    r = map(curr_vol, 0, 1, 100, 250) + noise(curr_vol) * 50;
+    //graphics.translate(width/3, height/3);
+    if(prev_vol == null){
+      prev_vol = 10*noise(sin(TWO_PI/(Math.random()*10)),cos(TWO_PI/(Math.random()*5)),pdy);
+      //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
+      prev_y = prev_vol*sin(pdy) + Math.random() * 5 + height/2 + perturbation;
+      prev_x = prev_vol*cos(pdy) + width/2 + perturbation;
+  
+      //curr_y = map(noise(curr_vol), 0, 1, height/2, 0);
+      //curr_x = 100*noise(pdy) + Math.random()*50;
+      curr_y = r * sin(pdy+0.01) + height/2 + r*noise(pdy) + perturbation;
+      curr_x = r * cos(pdy+0.01) + width/2 + r*noise(pdy) + perturbation;
+      //graphics.line(prev_x, prev_y, curr_x, curr_y);
+      prev_vol = curr_vol;
+      prev_x = curr_x;
+      prev_y = curr_y;
+    }
+    else{
+      //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
+      //curr_x = 100*noise(pdy) + Math.random() * 100;
+      curr_y = r * sin(pdy) + height/2 + r*noise(pdy) + perturbation;
+      curr_x = r * cos(pdy) + width/2 + r*noise(pdy) + perturbation;
+      graphics.line(prev_x, prev_y, curr_x, curr_y);
+      prev_vol = curr_vol;
+      prev_x = curr_x;
+      prev_y = curr_y;
+    }
+    pdy+=0.05;
+  }
+  
+  console.log(curr_vol);
+  image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
     console.log("space down!")
     startVoiceMsg()
   }
   if (keyWentUp("space"))
-    stopVoiceMsg()
+    stopVoiceMsg();
+  
+
 
 }
 
