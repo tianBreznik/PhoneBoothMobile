@@ -189,8 +189,8 @@ var startPos;
 var distance = 0; //distance from start pos
 
 
-var wWidth = 3;
-var wHeight = 3;
+var wWidth = 4;
+var wHeight = 4;
 function worldSetup() {
   pos = createVector(1, 1)
   console.log(pos.x)
@@ -278,10 +278,22 @@ function drawWorldRoom() {
 
 var vClouds = document.getElementById("clouds");
 var vMoon = document.getElementById("moon")
+var vRain = document.getElementById("rain")
+
 function setVideoOpacities() {
-  var distNorm = map(distance, 0, wWidth - 0.5, 0, 1, true)
-  var inverted = 1 - distNorm
-  console.log("Noramlised distance is ", distNorm, "\nInverted dist is: ", inverted)
-  vMoon.style.opacity = distNorm;
-  vClouds.style.opacity = inverted
+
+  //first dist
+  var fDist = map(distance, 0, 2.5, 0, 1, true)
+  var fInverted = 1 - fDist
+
+  //second dist
+  var sDist = map(distance, 2.5, wWidth, 0, 1, true)
+  var sInverted = 1 - sDist
+
+  console.log("fDist: ", fDist, "\n", "fInverted: ", fInverted, "\n", "sDist: ", sDist, "\n", "sInverted: ", sInverted)
+
+  vMoon.style.opacity = fDist - sDist;
+  vClouds.style.opacity = fInverted - sDist;
+  vRain.style.opacity = sDist
+
 }
