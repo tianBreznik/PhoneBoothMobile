@@ -34,8 +34,9 @@ var stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
 var stroke_width;
 var perturbation_x;
 var perturbation_y;
-var new_low = 100;
-var new_high = 500;
+var new_low = 200;
+var new_high = 230;
+var neg = -1;
 
 function startVoiceMsg() {
 
@@ -46,12 +47,14 @@ function startVoiceMsg() {
     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
     stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    perturbation_x = map(Math.random(), 0, 1, -100, 100);
-    perturbation_y = map(Math.random(), 0, 1, -100, 100);
+    perturbation_x = map(Math.random(), 0, 1, -150, 100);
+    perturbation_y = map(Math.random(), 0, 1, -200, 100);
     prev_vol = null;
     new_low = map(Math.random(), 0, 1, 10, 100);
     new_high = map(Math.random(), 0, 1, 50, 300);
     pdy = map(Math.random(), 0, 1, 0, 0.1);
+    neg = Math.random() < 0.5 ? -1 : 1;
+    console.log(neg);
     noiseSeed(map(Math.random(), 0, 1, 1, 99));
 
     console.log("Location is ", location)
@@ -206,26 +209,17 @@ function draw() {
 
   if (voicePlaying) {
     //var curr_vol = amp.getLevel();
-    r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * 50 * pdy;
+    r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * new_high * pdy;
     if (prev_vol == null) {
       prev_vol = 10 * noise(sin(TWO_PI / (Math.random() * 10)), cos(TWO_PI / (Math.random() * 5)), pdy);
       //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
       prev_y = r * sin(pdy - 0.01) + Math.random() * 5 + height / 2 + perturbation_y;
       prev_x = r * cos(pdy - 0.01) + width / 2 + perturbation_x;
-
-      //curr_y = map(noise(curr_vol), 0, 1, height/2, 0);
-      //curr_x = 100*noise(pdy) + Math.random()*50;
-      curr_y = r * sin(pdy + 0.01) + height / 2 + r * noise(pdy) + perturbation_y;
-      curr_x = r * cos(pdy + 0.01) + width / 2 + r * noise(pdy) + perturbation_x;
-      //graphics.line(prev_x, prev_y, curr_x, curr_y);
-      prev_vol = curr_vol;
-      prev_x = curr_x;
-      prev_y = curr_y;
     }
     else {
       //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
       //curr_x = 100*noise(pdy) + Math.random() * 100;
-      curr_y = r * sin(pdy + curr_vol) + height / 2 + r * noise(pdy) + perturbation_y;
+      curr_y = neg * r * sin(pdy + curr_vol) + height / 2 + r * noise(pdy) + perturbation_y;
       curr_x = r * cos(pdy + curr_vol) + width / 2 + r * noise(pdy) + perturbation_x;
       // graphics.curve(
       //   prev_x, prev_y,
@@ -240,10 +234,9 @@ function draw() {
       prev_x = curr_x;
       prev_y = curr_y;
     }
-    pdy += 0.05;
-  }
-
-  //console.log(curr_vol);
+   pdy+=0.05;
+ }
+  
   image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
