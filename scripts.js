@@ -217,7 +217,7 @@ function draw() {
       prev_x = curr_x;
       prev_y = curr_y;
     }
-   pdy+=0.05;
+   pdy+=0.01;
  }
   
   console.log(curr_vol);
