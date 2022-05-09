@@ -58,27 +58,32 @@ function startVoiceMsg() {
     console.log("Distance is ", distance)
 
     //zberi pravilen sound
-    if (distance < 0) {
+    if (distance == 0)
       currentSound = startSound
-    } else if (distance < 2)
+    else if (distance < 2)
       currentSound = random(sloArray)
     else if (distance < 3)
       currentSound = random(engArray)
     else if (distance <= 4)
+      currentSound = random(otherArray)
 
 
-      // začni igrait current sound
-      currentSound.setVolume(1);
+
+    // začni igrait current sound
+    currentSound.setVolume(1);
     currentSound.play();
   }
 }
 
 function stopVoiceMsg() {
-  voicePlaying = false;
-  currentSound.setVolume(0, 0.3);
-  setTimeout(() => {
-    currentSound.pause()
-  }, 500);
+  if (voicePlaying) {
+    voicePlaying = false;
+    currentSound.setVolume(0, 0.3);
+    setTimeout(() => {
+      currentSound.pause()
+    }, 500);
+  }
+
 }
 
 
@@ -88,6 +93,9 @@ let sloArray;
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
 let engArray;
 
+let other1, other2, other3, other4, other5, other6, other7, other8, other9;
+let otherArray;
+
 var amp;
 
 function preload() {
@@ -95,6 +103,7 @@ function preload() {
 
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
   //load slo sounds
   slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo2 = loadSound('assets/slo/eva2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -117,6 +126,18 @@ function preload() {
   eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 
   engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10]
+
+  other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other2 = loadSound('assets/other/fer_esp_spain', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other3 = loadSound('assets/other/mer_esp_argentina', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other4 = loadSound('assets/other/mer_esp_argentina_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other5 = loadSound('assets/other/sebastian_esp_mex', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other6 = loadSound('assets/other/simo_ita_italy', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other7 = loadSound('assets/other/rasa_lt', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other8 = loadSound('assets/other/haissa_pt_portugal_1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9]
 }
 
 function onSoundLoadSuccess(e) {
@@ -284,14 +305,11 @@ function worldSetup() {
 
 
 function worldDraw() {
-  fill(0, 30)
-  square(0, 0, 512)
-  fill(255)
-  //noStroke()
-  text("X: " + pos.x, 10, 20)
-  text("Y: " + pos.y, 10, 40)
-  text("Dist: " + distance, 10, 60)
-  text("isPlaying " + voicePlaying, 10, 80)
+
+  // text("X: " + pos.x, 10, 20)
+  // text("Y: " + pos.y, 10, 40)
+  // text("Dist: " + distance, 10, 60)
+  // text("isPlaying " + voicePlaying, 10, 80)
   // :)))
   if (voicePlaying)
     if (!currentSound.isPlaying())
