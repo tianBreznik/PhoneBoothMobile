@@ -34,8 +34,8 @@ var stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
 var stroke_width;
 var perturbation_x;
 var perturbation_y;
-var new_low = 100;
-var new_high = 500;
+var new_low = 200;
+var new_high = 230;
 var neg = -1;
 
 function startVoiceMsg() {
@@ -47,8 +47,8 @@ function startVoiceMsg() {
     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
     stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    perturbation_x = map(Math.random(), 0, 1, -100, 100);
-    perturbation_y = map(Math.random(), 0, 1, -100, 100);
+    perturbation_x = map(Math.random(), 0, 1, -150, 100);
+    perturbation_y = map(Math.random(), 0, 1, -200, 100);
     prev_vol = null;
     new_low = map(Math.random(), 0, 1, 10, 100);
     new_high = map(Math.random(), 0, 1, 50, 300);
