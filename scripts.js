@@ -38,6 +38,10 @@ var new_low = 200;
 var new_high = 230;
 var neg = -1;
 
+
+var sloNum = 0
+var engNum = 0
+var otherNum = 0
 function startVoiceMsg() {
 
 
@@ -63,12 +67,19 @@ function startVoiceMsg() {
     //zberi pravilen sound
     if (distance == 0)
       currentSound = startSound
-    else if (distance < 2)
-      currentSound = random(sloArray)
-    else if (distance < 3)
-      currentSound = random(engArray)
-    else if (distance <= 4)
-      currentSound = random(otherArray)
+    else if (distance < 2) {
+      currentSound = sloArray[sloNum % sloArray.length] //random(sloArray)
+      sloNum += 1;
+    }
+    else if (distance < 3) {
+      currentSound = engArray[engNum % engArray.length]
+      engNum += 1;
+    }
+    else if (distance <= 4) {
+      currentSound = otherArray[otherNum % otherArray.length]
+      otherNum += 1
+
+    }
 
 
 
@@ -113,7 +124,9 @@ function preload() {
   slo3 = loadSound('assets/slo/eva3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo4 = loadSound('assets/slo/luka1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  sloArray = [slo1, slo2, slo3, slo4, slo5]
+  slo6 = loadSound('assets/slo/lana1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo7 = loadSound('assets/slo/lana2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7]
   //load eng sounds
 
   //load eng sounds
@@ -127,8 +140,10 @@ function preload() {
   eng8 = loadSound('assets/eng/sarah2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng9 = loadSound('assets/eng/sarah3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng11 = loadSound('assets/eng/elle1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  eng12 = loadSound('assets/eng/amanda1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12]
 
-  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10]
 
   other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other2 = loadSound('assets/other/fer_esp_spain', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -139,7 +154,6 @@ function preload() {
   other7 = loadSound('assets/other/rasa_lt', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other8 = loadSound('assets/other/haissa_pt_portugal_1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
   otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9]
 }
 
@@ -176,9 +190,11 @@ function setup() {
 
 
   worldSetup();
-  //startVoiceMsg()
-
-  //sound playing stuff
+  //array shuffling
+  sloArray.sort(() => Math.random() - 0.5);
+  engArray.sort(() => Math.random() - 0.5);
+  otherArray.sort(() => Math.random() - 0.5);
+  console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
 }
 
 var prev_vol;
@@ -234,9 +250,9 @@ function draw() {
       prev_x = curr_x;
       prev_y = curr_y;
     }
-   pdy+=0.05;
- }
-  
+    pdy += 0.05;
+  }
+
   image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
