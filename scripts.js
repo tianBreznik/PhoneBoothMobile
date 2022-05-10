@@ -65,23 +65,25 @@ function startVoiceMsg() {
     console.log("Distance is ", distance)
 
     //zberi pravilen sound
-    if (distance == 0)
+    if (distance == 0) {
       currentSound = startSound
+      htmlEnergy("slo")
+    }
     else if (distance < 2) {
       currentSound = sloArray[sloNum % sloArray.length] //random(sloArray)
       sloNum += 1;
+      htmlEnergy("slo")
     }
     else if (distance < 3) {
       currentSound = engArray[engNum % engArray.length]
       engNum += 1;
+      htmlEnergy("eng")
     }
     else if (distance <= 4) {
       currentSound = otherArray[otherNum % otherArray.length]
       otherNum += 1
-
+      htmlEnergy("other")
     }
-
-
 
     // začni igrait current sound
     currentSound.setVolume(1);
@@ -101,13 +103,29 @@ function stopVoiceMsg() {
 }
 
 
+var sloEnergy = "ta umetnina deluje zaradi HTML energije"
+var engEnergy = "this art piece operates on HTML energy"
+var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben"]
+
+function htmlEnergy(type = "slo") {
+  var energy = document.getElementById("energy")
+  if (type == "slo")
+    energy.innerHTML = sloEnergy
+  else if (type == "eng")
+    energy.innerHTML = sloEnergy
+  else if (type == "other")
+    energy.innerHTML = random(otherEnergy)
+}
+
+
+
 let startSound;
-let slo1, slo2, slo3, slo4, slo5, slo6, slo7;
+let slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8;
 let sloArray;
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
 let engArray;
 
-let other1, other2, other3, other4, other5, other6, other7, other8, other9;
+let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11;
 let otherArray;
 
 var amp;
@@ -126,7 +144,9 @@ function preload() {
   slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo6 = loadSound('assets/slo/lana1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo7 = loadSound('assets/slo/lana2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7]
+  slo7 = loadSound('assets/slo/hana_alja_helena', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8]
   //load eng sounds
 
   //load eng sounds
@@ -154,7 +174,10 @@ function preload() {
   other7 = loadSound('assets/other/rasa_lt', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other8 = loadSound('assets/other/haissa_pt_portugal_1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9]
+  other10 = loadSound('assets/other/sev', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other11 = loadSound('assets/other/silas', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+
+  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11]
 }
 
 function onSoundLoadSuccess(e) {
