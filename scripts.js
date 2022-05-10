@@ -38,10 +38,6 @@ var new_low = 200;
 var new_high = 230;
 var neg = -1;
 
-
-var sloNum = 0
-var engNum = 0
-var otherNum = 0
 function startVoiceMsg() {
 
 
@@ -65,39 +61,27 @@ function startVoiceMsg() {
     console.log("Distance is ", distance)
 
     //zberi pravilen sound
-    if (distance == 0)
+    if (distance < 0) {
       currentSound = startSound
-    else if (distance < 2) {
-      currentSound = sloArray[sloNum % sloArray.length] //random(sloArray)
-      sloNum += 1;
-    }
-    else if (distance < 3) {
-      currentSound = engArray[engNum % engArray.length]
-      engNum += 1;
-    }
-    else if (distance <= 4) {
-      currentSound = otherArray[otherNum % otherArray.length]
-      otherNum += 1
-
-    }
+    } else if (distance < 2)
+      currentSound = random(sloArray)
+    else if (distance < 3)
+      currentSound = random(engArray)
+    else if (distance <= 4)
 
 
-
-    // začni igrait current sound
-    currentSound.setVolume(1);
+      // začni igrait current sound
+      currentSound.setVolume(1);
     currentSound.play();
   }
 }
 
 function stopVoiceMsg() {
-  if (voicePlaying) {
-    voicePlaying = false;
-    currentSound.setVolume(0, 0.3);
-    setTimeout(() => {
-      currentSound.pause()
-    }, 500);
-  }
-
+  voicePlaying = false;
+  currentSound.setVolume(0, 0.3);
+  setTimeout(() => {
+    currentSound.pause()
+  }, 500);
 }
 
 
@@ -107,9 +91,6 @@ let sloArray;
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
 let engArray;
 
-let other1, other2, other3, other4, other5, other6, other7, other8, other9;
-let otherArray;
-
 var amp;
 
 function preload() {
@@ -117,16 +98,13 @@ function preload() {
 
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
   //load slo sounds
   slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo2 = loadSound('assets/slo/eva2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo3 = loadSound('assets/slo/eva3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo4 = loadSound('assets/slo/luka1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo6 = loadSound('assets/slo/lana1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo7 = loadSound('assets/slo/lana2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7]
+  sloArray = [slo1, slo2, slo3, slo4, slo5]
   //load eng sounds
 
   //load eng sounds
@@ -140,21 +118,8 @@ function preload() {
   eng8 = loadSound('assets/eng/sarah2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng9 = loadSound('assets/eng/sarah3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng11 = loadSound('assets/eng/elle1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng12 = loadSound('assets/eng/amanda1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12]
 
-
-  other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other2 = loadSound('assets/other/fer_esp_spain', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other3 = loadSound('assets/other/mer_esp_argentina', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other4 = loadSound('assets/other/mer_esp_argentina_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other5 = loadSound('assets/other/sebastian_esp_mex', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other6 = loadSound('assets/other/simo_ita_italy', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other7 = loadSound('assets/other/rasa_lt', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other8 = loadSound('assets/other/haissa_pt_portugal_1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9]
+  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10]
 }
 
 function onSoundLoadSuccess(e) {
@@ -190,11 +155,9 @@ function setup() {
 
 
   worldSetup();
-  //array shuffling
-  sloArray.sort(() => Math.random() - 0.5);
-  engArray.sort(() => Math.random() - 0.5);
-  otherArray.sort(() => Math.random() - 0.5);
-  console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
+  //startVoiceMsg()
+
+  //sound playing stuff
 }
 
 var prev_vol;
@@ -228,31 +191,20 @@ function draw() {
     r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * new_high * pdy;
     if (prev_vol == null) {
       prev_vol = 10 * noise(sin(TWO_PI / (Math.random() * 10)), cos(TWO_PI / (Math.random() * 5)), pdy);
-      //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
       prev_y = r * sin(pdy - 0.01) + Math.random() * 5 + height / 2 + perturbation_y;
       prev_x = r * cos(pdy - 0.01) + width / 2 + perturbation_x;
     }
     else {
-      //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
-      //curr_x = 100*noise(pdy) + Math.random() * 100;
       curr_y = neg * r * sin(pdy + curr_vol) + height / 2 + r * noise(pdy) + perturbation_y;
       curr_x = r * cos(pdy + curr_vol) + width / 2 + r * noise(pdy) + perturbation_x;
-      // graphics.curve(
-      //   prev_x, prev_y,
-      //   prev_x + noise(pdy)*5, 
-      //   prev_y + noise(pdy+0.5)*10,
-      //   curr_x - noise(pdy+0.02)*15, 
-      //   curr_y - noise(pdy)*2, 
-      //   curr_x,
-      //   curr_y);
       graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
       prev_y = curr_y;
     }
-    pdy += 0.05;
-  }
-
+   pdy+=0.05;
+ }
+  
   image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
@@ -314,11 +266,14 @@ function worldSetup() {
 
 
 function worldDraw() {
-
-  // text("X: " + pos.x, 10, 20)
-  // text("Y: " + pos.y, 10, 40)
-  // text("Dist: " + distance, 10, 60)
-  // text("isPlaying " + voicePlaying, 10, 80)
+  fill(0, 30)
+  square(0, 0, 512)
+  fill(255)
+  //noStroke()
+  text("X: " + pos.x, 10, 20)
+  text("Y: " + pos.y, 10, 40)
+  text("Dist: " + distance, 10, 60)
+  text("isPlaying " + voicePlaying, 10, 80)
   // :)))
   if (voicePlaying)
     if (!currentSound.isPlaying())
@@ -406,3 +361,23 @@ function setVideoOpacities() {
   vRain.style.opacity = sDist
 
 }
+
+function idleLogout() {
+  var t;
+  window.onkeydown = resetTimer;   
+
+  function reset_n_download() {
+      // your function for too long inactivity goes here
+      // e.g. window.location.href = 'logout.php';
+      console.log("wipe it");
+      console.log(graphics);
+      //saveCanvas(graphics.canvas, 'sessions/canvas' + str(new_high), 'png');
+      window.location.reload();
+  }
+
+  function resetTimer() {
+      clearTimeout(t);
+      t = setTimeout(reset_n_download, 30000);  // time is in milliseconds
+  }
+}
+idleLogout();
