@@ -1,14 +1,14 @@
 let ws;
 
 let KEYS = {
-    "A": {'keyCode':32, 'which':32, 'key': ' '},
-    "B": {'keyCode':32, 'which':32, 'key': ' '},
-    "D": {'keyCode':32, 'which':32, 'key': ' '},
+    "A": { 'keyCode': 32, 'which': 32, 'key': ' ' },
+    "B": { 'keyCode': 32, 'which': 32, 'key': ' ' },
+    "D": { 'keyCode': 32, 'which': 32, 'key': ' ' },
 
-    "2": {'keyCode':40, 'which':40, 'key': 'ArrowDown'},
-    "4": {'keyCode':37, 'which':37, 'key': 'ArrowLeft'},
-    "6": {'keyCode':39, 'which':39, 'key': 'ArrowRight'},
-    "8": {'keyCode':38, 'which':38, 'key': 'ArrowUp'},
+    "2": { 'keyCode': 40, 'which': 40, 'key': 'ArrowDown' },
+    "4": { 'keyCode': 37, 'which': 37, 'key': 'ArrowLeft' },
+    "6": { 'keyCode': 39, 'which': 39, 'key': 'ArrowRight' },
+    "8": { 'keyCode': 38, 'which': 38, 'key': 'ArrowUp' },
 
     /*
     "1": {'keyCode':49, 'which':49, 'key': '1'},
@@ -21,9 +21,9 @@ let KEYS = {
     "8": {'keyCode':56, 'which':56, 'key': '8'},
     "9": {'keyCode':57, 'which':57, 'key': '9'},
     */
-    "*": {'keyCode':106, 'which':106, 'key': '*'},
-    "0": {'keyCode':48, 'which':48, 'key': '0'},
-    "#": {'keyCode':51, 'which':51, 'key': '#'},
+    "*": { 'keyCode': 106, 'which': 106, 'key': '*' },
+    "0": { 'keyCode': 48, 'which': 48, 'key': '0' },
+    "#": { 'keyCode': 51, 'which': 51, 'key': '#' },
 }
 
 function connect() {
@@ -42,13 +42,21 @@ function connect() {
         if (cmd.charAt(0) == "d") {
             // $key.classList.add("pressed");
 
-            let ke = new KeyboardEvent('keydown', kd);
-            document.dispatchEvent(ke)
+            //let ke = new KeyboardEvent('keydown', kd);
+            //document.dispatchEvent(ke)
+            if (cmd.charAt(1) == "4") //left
+                worldMove(-1, 0)
+            else if (cmd.charAt(1) == "2") //up
+                worldMove(0, -1)
+            else if (cmd.charAt(1) == "6") //right
+                worldMove(1, 0)
+            else if (cmd.charAt(1) == "8") //down
+                worldMove(0, 1)
         } else {
             // $key.classList.remove("pressed");
 
-            let ke = new KeyboardEvent('keyup', kd);
-            document.dispatchEvent(ke)
+            //let ke = new KeyboardEvent('keyup', kd);
+            //document.dispatchEvent(ke)
         }
     };
 
