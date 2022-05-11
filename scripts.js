@@ -38,10 +38,6 @@ var new_low = 200;
 var new_high = 230;
 var neg = -1;
 
-
-var sloNum = 0
-var engNum = 0
-var otherNum = 0
 function startVoiceMsg() {
 
 
@@ -92,14 +88,11 @@ function startVoiceMsg() {
 }
 
 function stopVoiceMsg() {
-  if (voicePlaying) {
-    voicePlaying = false;
-    currentSound.setVolume(0, 0.3);
-    setTimeout(() => {
-      currentSound.pause()
-    }, 500);
-  }
-
+  voicePlaying = false;
+  currentSound.setVolume(0, 0.3);
+  setTimeout(() => {
+    currentSound.pause()
+  }, 500);
 }
 
 
@@ -135,7 +128,6 @@ function preload() {
 
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
   //load slo sounds
   slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo2 = loadSound('assets/slo/eva2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -213,11 +205,9 @@ function setup() {
 
 
   worldSetup();
-  //array shuffling
-  sloArray.sort(() => Math.random() - 0.5);
-  engArray.sort(() => Math.random() - 0.5);
-  otherArray.sort(() => Math.random() - 0.5);
-  console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
+  //startVoiceMsg()
+
+  //sound playing stuff
 }
 
 var prev_vol;
@@ -251,31 +241,20 @@ function draw() {
     r = map(curr_vol, 0, 1, new_low, new_high) + noise(curr_vol) * new_high * pdy;
     if (prev_vol == null) {
       prev_vol = 10 * noise(sin(TWO_PI / (Math.random() * 10)), cos(TWO_PI / (Math.random() * 5)), pdy);
-      //prev_y = map(noise(cos(prev_vol*TWO_PI)),0,1,0,100);
       prev_y = r * sin(pdy - 0.01) + Math.random() * 5 + height / 2 + perturbation_y;
       prev_x = r * cos(pdy - 0.01) + width / 2 + perturbation_x;
     }
     else {
-      //curr_y = map(noise(curr_vol), 0, 1, height/2, 0) + Math.random()*50;
-      //curr_x = 100*noise(pdy) + Math.random() * 100;
       curr_y = neg * r * sin(pdy + curr_vol) + height / 2 + r * noise(pdy) + perturbation_y;
       curr_x = r * cos(pdy + curr_vol) + width / 2 + r * noise(pdy) + perturbation_x;
-      // graphics.curve(
-      //   prev_x, prev_y,
-      //   prev_x + noise(pdy)*5, 
-      //   prev_y + noise(pdy+0.5)*10,
-      //   curr_x - noise(pdy+0.02)*15, 
-      //   curr_y - noise(pdy)*2, 
-      //   curr_x,
-      //   curr_y);
       graphics.line(prev_x, prev_y, curr_x, curr_y);
       prev_vol = curr_vol;
       prev_x = curr_x;
       prev_y = curr_y;
     }
-    pdy += 0.05;
-  }
-
+   pdy+=0.05;
+ }
+  
   image(graphics, 0, 0);
 
   if (keyWentDown("space")) {
@@ -337,11 +316,14 @@ function worldSetup() {
 
 
 function worldDraw() {
-
-  // text("X: " + pos.x, 10, 20)
-  // text("Y: " + pos.y, 10, 40)
-  // text("Dist: " + distance, 10, 60)
-  // text("isPlaying " + voicePlaying, 10, 80)
+  fill(0, 30)
+  square(0, 0, 512)
+  fill(255)
+  //noStroke()
+  text("X: " + pos.x, 10, 20)
+  text("Y: " + pos.y, 10, 40)
+  text("Dist: " + distance, 10, 60)
+  text("isPlaying " + voicePlaying, 10, 80)
   // :)))
   if (voicePlaying)
     if (!currentSound.isPlaying())
@@ -429,3 +411,23 @@ function setVideoOpacities() {
   vRain.style.opacity = sDist
 
 }
+
+function idleLogout() {
+  var t;
+  window.onkeydown = resetTimer;   
+
+  function reset_n_download() {
+      // your function for too long inactivity goes here
+      // e.g. window.location.href = 'logout.php';
+      console.log("wipe it");
+      console.log(graphics);
+      //saveCanvas(graphics.canvas, 'sessions/canvas' + str(new_high), 'png');
+      window.location.reload();
+  }
+
+  function resetTimer() {
+      clearTimeout(t);
+      t = setTimeout(reset_n_download, 30000);  // time is in milliseconds
+  }
+}
+idleLogout();
