@@ -1,3 +1,23 @@
+function requestFullScreen(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
+
+document.getElementById("energy").onclick = ev => {
+    var elem = document.body; // Make the body go full screen.
+    requestFullScreen(elem);
+}
+
+
 let ws;
 
 let KEYS = {
@@ -52,7 +72,11 @@ function connect() {
                 worldMove(1, 0)
             else if (cmd.charAt(1) == "8") //down
                 worldMove(0, 1)
+            else if (cmd.charAt(1) == "A" || cmd.charAt(1) == "B" || cmd.charAt(1) == "D")
+                startVoiceMsg()
         } else {
+            if (cmd.charAt(1) == "A" || cmd.charAt(1) == "B" || cmd.charAt(1) == "D")
+                stopVoiceMsg()
             // $key.classList.remove("pressed");
 
             //let ke = new KeyboardEvent('keyup', kd);
