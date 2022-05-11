@@ -219,9 +219,12 @@ function setup() {
 
   worldSetup();
   //array shuffling
-  sloArray.sort(() => Math.random() - 0.5);
-  engArray.sort(() => Math.random() - 0.5);
-  otherArray.sort(() => Math.random() - 0.5);
+  //sloArray.sort(() => Math.random() - 0.5);
+  sloArray = shuffleArray(sloArray)
+  //engArray.sort(() => Math.random() - 0.5);
+  engArray = shuffleArray(engArray)
+  //otherArray.sort(() => Math.random() - 0.5);
+  otherArray = shuffleArray(otherArray)
   console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
 }
 
@@ -454,3 +457,19 @@ function idleLogout() {
   }
 }
 idleLogout();
+
+
+function shuffleArray(array) {
+  let curId = array.length;
+  // There remain elements to shuffle
+  while (0 !== curId) {
+    // Pick a remaining element
+    let randId = Math.floor(Math.random() * curId);
+    curId -= 1;
+    // Swap it with the current element.
+    let tmp = array[curId];
+    array[curId] = array[randId];
+    array[randId] = tmp;
+  }
+  return array;
+}
