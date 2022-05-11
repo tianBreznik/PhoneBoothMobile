@@ -27,7 +27,7 @@ let KEYS = {
 }
 
 function connect() {
-    ws = new WebSocket('ws://192.168.1.150:81');
+    ws = new WebSocket('ws://192.168.4.1:81');
     ws.onopen = function () {
 
     };
