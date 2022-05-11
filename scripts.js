@@ -105,7 +105,7 @@ function stopVoiceMsg() {
 
 var sloEnergy = "ta umetnina deluje zaradi HTML energije"
 var engEnergy = "this art piece operates on HTML energy"
-var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben"]
+var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben", "essa obra de arte opera utilizando a energia HTML"]
 
 function htmlEnergy(type = "slo") {
   var energy = document.getElementById("energy")
