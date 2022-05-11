@@ -105,7 +105,7 @@ function stopVoiceMsg() {
 
 var sloEnergy = "ta umetnina deluje zaradi HTML energije"
 var engEnergy = "this art piece operates on HTML energy"
-var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben", "essa obra de arte opera utilizando a energia HTML", "这个艺术作品依靠HTML给的能量运行"]
+var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben", "essa obra de arte opera utilizando a energia HTML", "这个艺术作品依靠HTML给的能量运行", "šitas meno kūrinys važiuoja ant html energijos"]
 
 function htmlEnergy(type = "slo") {
   var energy = document.getElementById("energy")
@@ -122,7 +122,7 @@ function htmlEnergy(type = "slo") {
 let startSound;
 let slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8;
 let sloArray;
-let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13;
+let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14;
 let engArray;
 
 let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13;
@@ -144,7 +144,7 @@ function preload() {
   slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo6 = loadSound('assets/slo/lana1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   slo7 = loadSound('assets/slo/lana2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo7 = loadSound('assets/slo/hana_alja_helena', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  slo8 = loadSound('assets/slo/hana_alja_helena', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 
   sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8]
   //load eng sounds
@@ -163,7 +163,8 @@ function preload() {
   eng11 = loadSound('assets/eng/elle1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng12 = loadSound('assets/eng/amanda1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng13 = loadSound('assets/eng/jiarong_eng', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13]
+  eng14 = loadSound('assets/eng/amanda', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14]
 
 
   other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
