@@ -105,7 +105,7 @@ function stopVoiceMsg() {
 
 var sloEnergy = "ta umetnina deluje zaradi HTML energije"
 var engEnergy = "this art piece operates on HTML energy"
-var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben", "essa obra de arte opera utilizando a energia HTML"]
+var otherEnergy = ["esta obra de arte funciona con energía html", "kunststykket er drevet med HTML energi", "quest'opera d'arte è alimentata a energia HTML", "et art fonctionne sur l'énergie html", "diese kunst wird mit HTML energie betrieben", "essa obra de arte opera utilizando a energia HTML", "这个艺术作品依靠HTML给的能量运行"]
 
 function htmlEnergy(type = "slo") {
   var energy = document.getElementById("energy")
@@ -122,10 +122,10 @@ function htmlEnergy(type = "slo") {
 let startSound;
 let slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8;
 let sloArray;
-let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12;
+let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13;
 let engArray;
 
-let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11;
+let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13;
 let otherArray;
 
 var amp;
@@ -162,7 +162,8 @@ function preload() {
   eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng11 = loadSound('assets/eng/elle1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   eng12 = loadSound('assets/eng/amanda1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12]
+  eng13 = loadSound('assets/eng/jiarong_eng', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13]
 
 
   other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
@@ -176,8 +177,11 @@ function preload() {
   other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other10 = loadSound('assets/other/sev', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other11 = loadSound('assets/other/silas', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other12 = loadSound('assets/other/jiarong', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other13 = loadSound('assets/other/jiarong_dj', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 
-  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11]
+
+  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13]
 }
 
 function onSoundLoadSuccess(e) {
@@ -430,7 +434,7 @@ function setVideoOpacities() {
 
 }
 
-+function idleLogout() {
+function idleLogout() {
   var t;
   window.onkeydown = resetTimer;
 
@@ -445,7 +449,7 @@ function setVideoOpacities() {
 
   function resetTimer() {
     clearTimeout(t);
-    t = setTimeout(reset_n_download, 1000);  // time is in milliseconds
+    t = setTimeout(reset_n_download, 12000);  // time is in milliseconds
   }
 }
 idleLogout();
