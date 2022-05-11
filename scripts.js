@@ -438,25 +438,25 @@ function setVideoOpacities() {
 
 }
 
-function idleLogout() {
-  var t;
-  window.onkeydown = resetTimer;
+// function idleLogout() {
+//   var t;
+//   window.onkeydown = resetTimer;
 
-  function reset_n_download() {
-    // your function for too long inactivity goes here
-    // e.g. window.location.href = 'logout.php';
-    console.log("wipe it");
-    console.log(graphics);
-    //saveCanvas(graphics.canvas, 'sessions/canvas' + str(new_high), 'png');
-    window.location.reload();
-  }
+//   function reset_n_download() {
+//     // your function for too long inactivity goes here
+//     // e.g. window.location.href = 'logout.php';
+//     console.log("wipe it");
+//     console.log(graphics);
+//     //saveCanvas(graphics.canvas, 'sessions/canvas' + str(new_high), 'png');
+//     window.location.reload();
+//   }
 
-  function resetTimer() {
-    clearTimeout(t);
-    t = setTimeout(reset_n_download, 12000);  // time is in milliseconds
-  }
-}
-idleLogout();
+//   function resetTimer() {
+//     clearTimeout(t);
+//     t = setTimeout(reset_n_download, 12000);  // time is in milliseconds
+//   }
+// }
+// idleLogout();
 
 
 function shuffleArray(array) {
