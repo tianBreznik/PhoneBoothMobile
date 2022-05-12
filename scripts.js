@@ -125,7 +125,7 @@ let sloArray;
 let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14;
 let engArray;
 
-let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13;
+let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13, other14;
 let otherArray;
 
 var amp;
@@ -180,9 +180,9 @@ function preload() {
   other11 = loadSound('assets/other/silas', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other12 = loadSound('assets/other/jiarong', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
   other13 = loadSound('assets/other/jiarong_dj', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  other14 = loadSound('assets/other/mut', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 
-
-  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13]
+  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13, other14]
 }
 
 function onSoundLoadSuccess(e) {
