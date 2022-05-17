@@ -44,11 +44,10 @@ var engNum = 0
 var otherNum = 0
 function startVoiceMsg() {
 
-
   if (voicePlaying == false) {
 
     console.log("voice msg was started")
-    voicePlaying = true;
+//     voicePlaying = true;
     stroke_width = map(Math.random(), 0, 1, 1, 8);
     stroke_col = "#" + Math.floor(Math.random() * 16777215).toString(16);
     perturbation_x = map(Math.random(), 0, 1, -150, 100);
@@ -71,35 +70,118 @@ function startVoiceMsg() {
     }
     else if (distance < 2) {
       currentSound = sloArray[sloNum % sloArray.length] //random(sloArray)
-      sloNum += 1;
+      if (typeof currentSound != "string")
+        sloNum += 1;
       htmlEnergy("slo")
     }
     else if (distance < 3) {
       currentSound = engArray[engNum % engArray.length]
-      engNum += 1;
+      if (typeof currentSound != "string")
+        engNum += 1;
       htmlEnergy("eng")
     }
     else if (distance <= 4) {
       currentSound = otherArray[otherNum % otherArray.length]
-      otherNum += 1
+      if (typeof currentSound != "string")
+        otherNum += 1
       htmlEnergy("other")
     }
 
-    // začni igrait current sound
-    currentSound.setVolume(1);
-    currentSound.play();
+    if (typeof currentSound == "string") {
+      console.error("This should've been loaded!!!", currentSound)
+      cs = getCurrentScreenSound();
+
+      // Load next sound on this screen
+      if (!cs.static)
+        f_loadSound(cs.array, cs.num);
+      
+    } else {
+      console.debug("Trying to play", currentSound)
+    }
+
+    if (currentSound._ready) {
+
+      // začni igrait current sound
+      currentSound.setVolume(1);
+      currentSound.play();
+      voicePlaying = true;
+    } else {
+      console.error("Not ready", currentSound)
+    }
+
   }
 }
+
+
+Number.prototype.mod = function(n) {
+  return ((this%n)+n)%n;
+};
 
 function stopVoiceMsg() {
   if (voicePlaying) {
     voicePlaying = false;
     currentSound.setVolume(0, 0.3);
+
+    cs = getCurrentScreenSound();
+
+    // Load next sound on this screen
+    if (!cs.static)
+      f_loadSound(cs.array, cs.num);
+
     setTimeout(() => {
       currentSound.pause()
+      
+      // Unload the sound we just stopped
+      if (!cs.static)
+        f_unloadSound(cs.array, (cs.num - 1).mod(cs.array.length));
+      
     }, 500);
   }
 
+}
+
+function getCurrentScreenSound() {
+  let sound = {};
+  if (distance == 0) {
+    // startSound
+    sound.static = true;
+  }
+  else if (distance < 2) {
+    sound.array = sloArray;
+    sound.num = sloNum % sloArray.length;
+  }
+  else if (distance < 3) {
+    sound.array = engArray;
+    sound.num = engNum % engArray.length;
+  }
+  else if (distance <= 4) {
+    sound.array = otherArray;
+    sound.num = otherNum % otherArray.length;
+  } else {
+    // This really shouldn't happen
+    sound.static = true;
+  }
+  return sound;
+}
+
+function f_loadSound(soundArray, arrayPos) {
+  console.debug("Loading ", soundArray[arrayPos])
+  if (typeof soundArray[arrayPos] != "string") return;
+
+  soundArray[arrayPos] = loadSound(soundArray[arrayPos], onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
+  soundArray[arrayPos]._ready = false;
+}
+
+function f_unloadSound(soundArray, arrayPos) {
+  console.debug("Unloading ", soundArray[arrayPos])
+  if (typeof soundArray[arrayPos] == "string") return;
+
+  if (soundArray[arrayPos]._ready) {
+    soundArray[arrayPos].dispose();
+    soundArray[arrayPos] = soundArray[arrayPos].url;  
+  } else 
+    soundArray[arrayPos]._disposeLater = [soundArray, arrayPos];
+  
 }
 
 
@@ -120,12 +202,12 @@ function htmlEnergy(type = "slo") {
 
 
 let startSound;
-let slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8;
+//let slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8;
 let sloArray;
-let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14;
+//let eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14;
 let engArray;
 
-let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13, other14;
+//let other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13, other14;
 let otherArray;
 
 var amp;
@@ -136,56 +218,15 @@ function preload() {
   soundFormats('mp3');
   startSound = loadSound('assets/start', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
 
-  //load slo sounds
-  slo1 = loadSound('assets/slo/eva1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo2 = loadSound('assets/slo/eva2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo3 = loadSound('assets/slo/eva3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo4 = loadSound('assets/slo/luka1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo5 = loadSound('assets/slo/luka2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo6 = loadSound('assets/slo/lana1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo7 = loadSound('assets/slo/lana2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  slo8 = loadSound('assets/slo/hana_alja_helena', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
-  sloArray = [slo1, slo2, slo3, slo4, slo5, slo6, slo7, slo8]
-  //load eng sounds
-
-  //load eng sounds
-  eng1 = loadSound('assets/eng/fer', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng2 = loadSound('assets/eng/lucas1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng3 = loadSound('assets/eng/marie1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng4 = loadSound('assets/eng/marie2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng5 = loadSound('assets/eng/mathias1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng6 = loadSound('assets/eng/rebecca', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng7 = loadSound('assets/eng/sarah1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng8 = loadSound('assets/eng/sarah2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng9 = loadSound('assets/eng/sarah3', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng10 = loadSound('assets/eng/simo1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng11 = loadSound('assets/eng/elle1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng12 = loadSound('assets/eng/amanda1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng13 = loadSound('assets/eng/jiarong_eng', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  eng14 = loadSound('assets/eng/amanda', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  engArray = [eng1, eng2, eng3, eng4, eng5, eng6, eng7, eng8, eng9, eng10, eng11, eng12, eng13, eng14]
-
-
-  other1 = loadSound('assets/other/alina_ger', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other2 = loadSound('assets/other/fer_esp_spain', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other3 = loadSound('assets/other/mer_esp_argentina', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other4 = loadSound('assets/other/mer_esp_argentina_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other5 = loadSound('assets/other/sebastian_esp_mex', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other6 = loadSound('assets/other/simo_ita_italy', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other7 = loadSound('assets/other/rasa_lt', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other8 = loadSound('assets/other/haissa_pt_portugal_1', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other9 = loadSound('assets/other/haissa_pt_portugal_2', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other10 = loadSound('assets/other/sev', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other11 = loadSound('assets/other/silas', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other12 = loadSound('assets/other/jiarong', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other13 = loadSound('assets/other/jiarong_dj', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-  other14 = loadSound('assets/other/mut', onSoundLoadSuccess, onSoundLoadError, onSoundLoadProgress);
-
-  otherArray = [other1, other2, other3, other4, other5, other6, other7, other8, other9, other10, other11, other12, other13, other14]
+  sloArray = ['assets/slo/eva1','assets/slo/eva2','assets/slo/eva3','assets/slo/luka1','assets/slo/luka2','assets/slo/lana1','assets/slo/lana2','assets/slo/hana_alja_helena']
+  engArray = ['assets/eng/fer','assets/eng/lucas1','assets/eng/marie1','assets/eng/marie2','assets/eng/mathias1','assets/eng/rebecca','assets/eng/sarah1','assets/eng/sarah2','assets/eng/sarah3','assets/eng/simo1','assets/eng/elle1','assets/eng/amanda1','assets/eng/jiarong_eng','assets/eng/amanda',]
+  otherArray = ['assets/other/alina_ger','assets/other/fer_esp_spain','assets/other/mer_esp_argentina','assets/other/mer_esp_argentina_2','assets/other/sebastian_esp_mex','assets/other/simo_ita_italy','assets/other/rasa_lt','assets/other/haissa_pt_portugal_1','assets/other/haissa_pt_portugal_2','assets/other/sev','assets/other/silas','assets/other/jiarong','assets/other/jiarong_dj','assets/other/mut',]
 }
 
-function onSoundLoadSuccess(e) {
+function onSoundLoadSuccess(sound) {
+  if (sound._disposeLater)
+    f_unloadSound(sound._disposeLater[0], sound._disposeLater[1])
+  sound._ready = true;
   //console.log("load sound success", e);
 }
 function onSoundLoadError(e) {
@@ -375,6 +416,12 @@ function worldMovement() {
 
 
 function worldMove(xx = 0, yy = 0) {
+
+  // Before moving, unload the current sound
+  let cs = getCurrentScreenSound();
+  if (!cs.static)
+    f_unloadSound(cs.array, cs.num);
+
   var moveVector = createVector(xx, yy)
   pos.add(moveVector)
 
@@ -384,6 +431,11 @@ function worldMove(xx = 0, yy = 0) {
   pos.y = Math.min(pos.y, wHeight)
 
   distance = dist(pos.x, pos.y, 1, 1)
+  
+  // After moving, load the new current sound
+  cs = getCurrentScreenSound();
+  if (!cs.static)
+    f_loadSound(cs.array, cs.num);
 
   setVideoOpacities();
   stopVoiceMsg();
