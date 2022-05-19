@@ -218,14 +218,7 @@ function setup() {
 
 
   worldSetup();
-  //array shuffling
-  //sloArray.sort(() => Math.random() - 0.5);
-  sloArray = shuffleArray(sloArray)
-  //engArray.sort(() => Math.random() - 0.5);
-  engArray = shuffleArray(engArray)
-  //otherArray.sort(() => Math.random() - 0.5);
-  otherArray = shuffleArray(otherArray)
-  console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
+  shuffleSounds();
 }
 
 var prev_vol;
@@ -438,6 +431,8 @@ function setVideoOpacities() {
 
 }
 
+
+
 function idleLogout() {
   var t;
   window.onkeydown = resetTimer;
@@ -451,14 +446,32 @@ function idleLogout() {
     new_low = 200;
     new_high = 230;
     graphics.clear();
+    shuffleSounds();
+    setVideoOpacities();
+    vMoon.style.opacity = 0;
+    vClouds.style.opacity = 1;
+    vRain.style.opacity = 0;
   }
 
   function resetTimer() {
     clearTimeout(t);
-    t = setTimeout(reset_n_download, 12000);  // time is in milliseconds
+    t = setTimeout(reset_n_download, 20000);  // time is in milliseconds
   }
 }
 idleLogout();
+
+function shuffleSounds() {
+  //array shuffling
+  //sloArray.sort(() => Math.random() - 0.5);
+  sloArray = shuffleArray(sloArray)
+  //engArray.sort(() => Math.random() - 0.5);
+  engArray = shuffleArray(engArray)
+  //otherArray.sort(() => Math.random() - 0.5);
+  otherArray = shuffleArray(otherArray)
+  console.log("Slo array: ", sloArray, "\n", "Eng array: ", "\n", engArray, "Others: ", otherArray)
+  pos.x = 1
+  pos.y = 1
+}
 
 
 function shuffleArray(array) {
