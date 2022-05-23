@@ -21,8 +21,8 @@ document.getElementById("energy").onclick = ev => {
 let ws;
 
 let KEYS = {
-    "A": { 'keyCode': 32, 'which': 32, 'key': ' ' },
-    "B": { 'keyCode': 32, 'which': 32, 'key': ' ' },
+//    "A": { 'keyCode': 32, 'which': 32, 'key': ' ' },
+//    "B": { 'keyCode': 32, 'which': 32, 'key': ' ' },
     "D": { 'keyCode': 32, 'which': 32, 'key': ' ' },
 
     "2": { 'keyCode': 40, 'which': 40, 'key': 'ArrowDown' },
@@ -59,7 +59,10 @@ function connect() {
         let kd = KEYS[cmd.charAt(1)];
         console.debug(kd);
 
+        let $key = document.querySelector(".btn[data-btn=\"" + cmd.charAt(1) + "\"]")
+
         if (cmd.charAt(0) == "d") {
+            if ($key) $key.classList.add("down");
             // $key.classList.add("pressed");
 
             //let ke = new KeyboardEvent('keydown', kd);
@@ -74,7 +77,9 @@ function connect() {
                 worldMove(0, 1)
             else if (cmd.charAt(1) == "A" || cmd.charAt(1) == "B" || cmd.charAt(1) == "D")
                 startVoiceMsg()
+            
         } else {
+            if ($key) $key.classList.remove("down");
             if (cmd.charAt(1) == "A" || cmd.charAt(1) == "B" || cmd.charAt(1) == "D")
                 stopVoiceMsg()
             // $key.classList.remove("pressed");
