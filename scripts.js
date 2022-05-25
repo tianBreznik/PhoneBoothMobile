@@ -199,7 +199,7 @@ function onSoundLoadProgress(e) {
 
 // PROCESSING STUFF
 //#region processing
-var canv_side = 512;
+var canv_side = 256;
 function setup() {
   console.log("blabla")
   frameRate(20);
@@ -279,12 +279,12 @@ function draw() {
 
   image(graphics, 0, 0);
 
-  if (keyWentDown("space")) {
-    console.log("space down!")
-    startVoiceMsg()
-  }
-  if (keyWentUp("space"))
-    stopVoiceMsg();
+  //if (keyWentDown("space")) {
+  console.log("space down!")
+  startVoiceMsg()
+  //}
+  // if (keyWentUp("space"))
+  //   stopVoiceMsg();
 
 
 
@@ -383,12 +383,15 @@ function worldMove(xx = 0, yy = 0) {
 
 }
 
-
-
 var btnDva = document.getElementById("dva")
 var btnStiri = document.getElementById("stiri")
 var btnSest = document.getElementById("sest")
 var btnOsem = document.getElementById("osem")
+
+btnDva.addEventListener("click", event => {
+  console.log("You clicked dva");
+  console.log(event.pointerType);
+});
 
 function buttonOpacity() {
   if (pos.x == 1) btnStiri.style.opacity = 0;
@@ -402,7 +405,6 @@ function buttonOpacity() {
 
   if (pos.y == wHeight) btnOsem.style.opacity = 0;
   else btnOsem.style.opacity = 1;
-
 }
 
 

@@ -12,10 +12,10 @@ function requestFullScreen(element) {
     }
 }
 
-document.getElementById("energy").onclick = ev => {
-    var elem = document.body; // Make the body go full screen.
-    requestFullScreen(elem);
-}
+// document.getElementById("energy").onclick = ev => {
+//     var elem = document.body; // Make the body go full screen.
+//     requestFullScreen(elem);
+// }
 
 
 let ws;
@@ -46,6 +46,16 @@ let KEYS = {
     "#": { 'keyCode': 51, 'which': 51, 'key': '#' },
 }
 
+function sest_click(image){
+    console.log(image.src);
+    console.log("You clicked sest");
+}
+
+// document.getElementById("sest").addEventListener("click", event => {
+//     console.log("You clicked sest");
+//     console.log(event.pointerType);
+// });
+
 function connect() {
     ws = new WebSocket('ws://192.168.4.1:81');
     ws.onopen = function () {
@@ -63,6 +73,7 @@ function connect() {
 
         if (cmd.charAt(0) == "d") {
             if ($key) $key.classList.add("down");
+            console.log("pressing me");
             // $key.classList.add("pressed");
 
             //let ke = new KeyboardEvent('keydown', kd);
